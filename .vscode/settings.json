@@ -1,0 +1,13 @@
+{
+  "solidity.defaultCompiler": "remote",
+  "solidity.compileUsingRemoteVersion": "0.8.12",
+  "solidity.remappings": ["@openzeppelin/=node_modules/@openzeppelin/"],
+  "editor.formatOnSave": true,
+  "prettier.requireConfig": true,
+  "files.exclude": {
+    "**/node_modules": true
+  },
+  "prettier.ignorePath": ".prettierignore",
+  "mochaExplorer.require": "hardhat/register",
+  "mochaExplorer.cwd": "libs/contracts"
+}

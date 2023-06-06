@@ -1,0 +1,23 @@
+{
+  "include": [
+    "./hardhat.config.ts",
+    "./scripts",
+    "tests",
+    "tasks",
+    "./deploy",
+    "mocha.context.d.ts",
+    "./build/typechain",
+    "./typechain",
+    "./sdk"
+  ],
+  "files": ["./hardhat.config.ts"],
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "allowJs": true
+  }
+}
