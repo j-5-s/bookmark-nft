@@ -1,0 +1,32 @@
+{
+  "name": "@j5s/contracts",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "shared/ui/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["shared/ui/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "build-contracts": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "hardhat compile",
+        "cwd": "libs/contracts"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "dependsOn": ["build-contracts"],
+      "options": {
+        "command": "tsc --project libs/contracts/tsconfig.build.json"
+      }
+    }
+  }
+}

@@ -4,9 +4,7 @@
   "solidity.remappings": ["@openzeppelin/=node_modules/@openzeppelin/"],
   "editor.formatOnSave": true,
   "prettier.requireConfig": true,
-  "files.exclude": {
-    "**/node_modules": true
-  },
+  "files.exclude": {},
   "prettier.ignorePath": ".prettierignore",
   "mochaExplorer.require": "hardhat/register",
   "mochaExplorer.cwd": "libs/contracts",

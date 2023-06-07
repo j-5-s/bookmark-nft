@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import { Progress } from "../progress/Progress";
@@ -12,9 +13,9 @@ export const Header = ({ children, step }: HeaderProps) => {
       <div className="container mx-auto flex pt-5 flex-col">
         <div className="container mx-auto flex flex-wrap md:flex-nowrap items-center justify-between mb-2 ">
           <div className="w-12 h-12 flex items-center justify-center p-1 mr-2">
-            <a href="/" title="Home">
-              <Image src="/rico.png" width={40} height={40} />
-            </a>
+            <Link href="/" title="Home">
+              <Image src="/rico.png" alt="logo" width={40} height={40} />
+            </Link>
           </div>
           <div className="flex-1 md:mr-5 mr-0 title-font sm:text-2xl text-lg font-medium text-gray-900">
             {children}

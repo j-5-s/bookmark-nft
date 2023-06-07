@@ -5,7 +5,7 @@ import type { TokenChainData } from "../../../hooks/useFetchNFT";
 import { Check } from "../../icons/check";
 import { XCircle } from "../../icons/x-circle";
 import { InputPrice } from "../../form/InputPrice";
-import { BookmarkNFT } from "@j5s/contracts";
+import { BookmarkABI } from "@j5s/contracts";
 import { Burn } from "./Burn";
 import { NFTMetadata } from "../../../types";
 import { Address } from "../../utility/Address";
@@ -41,7 +41,7 @@ export const EditContractToken = (props: EditContractProps) => {
 
   const { data, isLoading, write, error } = useContractWrite({
     address,
-    abi: BookmarkNFT,
+    abi: BookmarkABI,
     functionName: "setClonePrice",
     args: [tokenId, fields.clonePrice],
   });

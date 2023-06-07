@@ -2,8 +2,10 @@
   "name": "@j5s/contracts",
   "version": "1.0.0",
   "license": "MIT",
+  "main": "index.js",
   "scripts": {
     "postinstall": "yarn build",
+    "build-ts": "tsc --project tsconfig.build.json",
     "build": "npx hardhat compile",
     "test": "npx hardhat test",
     "format": "prettier --write \"tests/**/*.ts\" \"tasks/**/*.ts\" \"contracts/**/*.sol\" \"deploy/**/*.ts\" \"hardhat.config.ts\"",

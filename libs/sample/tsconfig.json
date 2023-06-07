@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "outDir": "dist"
-  }
+    "allowJs": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true
+  },
+  "files": ["index.ts"],
+  "include": ["index.ts"],
+  "references": []
 }
