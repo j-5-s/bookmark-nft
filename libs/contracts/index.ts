@@ -1,3 +1,2 @@
-console.log("test")
-const foo = () => console.log("foo")
-export { foo }
+import BookmarkABI from "./build/abis/BookmarkNFT.json";
+export { BookmarkABI };

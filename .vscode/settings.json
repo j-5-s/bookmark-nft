@@ -9,5 +9,15 @@
   },
   "prettier.ignorePath": ".prettierignore",
   "mochaExplorer.require": "hardhat/register",
-  "mochaExplorer.cwd": "libs/contracts"
+  "mochaExplorer.cwd": "libs/contracts",
+  "cSpell.words": [
+    "abitype",
+    "arbitrum",
+    "dexie",
+    "Dexie",
+    "ipfs",
+    "Ipfs",
+    "wagmi",
+    "Wagmi"
+  ]
 }
