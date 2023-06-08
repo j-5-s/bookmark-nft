@@ -1,0 +1,72 @@
+{
+  "name": "@j5s/extension",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/extension/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/extension/src/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/extension"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "build:watch": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "nx build:wss @j5s/extension",
+          "nx watch --projects=@j5s/extension -- nx build @j5s/extension --configuration=development"
+        ],
+        "parallel": true
+      }
+    },
+    "build:hmr": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "rollup --config apps/extension/utils/reload/rollup.config.js"
+      }
+    },
+    "build:wss": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node utils/reload/initReloadServer.js",
+        "cwd": "apps/extension"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "nx build:hmr @j5s/extension",
+          "nx build:watch @j5s/extension"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/cart"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../coverage/cart"
+      }
+    }
+  }
+}

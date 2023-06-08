@@ -19,5 +19,6 @@
       "@j5s/contracts/bytecode": ["libs/contracts/bytecode.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp"],
+  "include": ["node_modules/@types"]
 }

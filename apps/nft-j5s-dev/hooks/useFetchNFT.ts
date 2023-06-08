@@ -34,7 +34,6 @@ export const useFetchNFT = (props: Props) => {
     tokenURI: null,
     error: null,
   });
-
   const { data, isLoading } = useContractRead({
     address: contractAddress,
     abi: BookmarkABI,
