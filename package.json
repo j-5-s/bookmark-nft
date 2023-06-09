@@ -5,6 +5,8 @@
   "scripts": {},
   "private": true,
   "devDependencies": {
+    "@babel/plugin-proposal-private-methods": "^7.18.6",
+    "@babel/preset-env": "^7.22.5",
     "@nrwl/nx-cloud": "latest",
     "@nx/cypress": "16.3.2",
     "@nx/eslint-plugin": "16.3.2",
