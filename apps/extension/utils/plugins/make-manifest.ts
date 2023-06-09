@@ -14,14 +14,7 @@ const distDir = resolve(
   "..",
   "dist/apps/extension"
 );
-const publicDir = resolve(
-  __dirname,
-  "..",
-  "..",
-  "..",
-  "..",
-  "dist/apps/public"
-);
+const publicDir = resolve(__dirname, "..", "..", "public");
 
 export default function makeManifest(
   manifest: chrome.runtime.ManifestV3,
@@ -32,7 +25,6 @@ export default function makeManifest(
       fs.mkdirSync(to);
     }
     const manifestPath = resolve(to, "manifest.json");
-
     // Naming change for cache invalidation
     if (config.contentScriptCssKey) {
       manifest.content_scripts.forEach((script) => {
@@ -41,7 +33,6 @@ export default function makeManifest(
         );
       });
     }
-
     fs.writeFileSync(
       manifestPath,
       ManifestParser.convertManifestToString(manifest)
