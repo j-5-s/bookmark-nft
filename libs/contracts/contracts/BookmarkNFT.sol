@@ -19,7 +19,8 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
     mapping(uint256 => uint256) private _cloneOf;
     mapping(uint256 => uint256) private _clonePrice;
     mapping(uint256 => bool) private _hasClonePrice;
-    mapping(string => uint256) private _urlToTokenId; 
+
+    mapping(string => uint256[]) public _urlToTokenId; 
 
     mapping(uint256 => address) private _idToCreator;
     address private _creator;
@@ -47,7 +48,6 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
     }
 
     function mintNFT(string memory _tokenURI, string memory _url) public {
-        require(_urlToTokenId[_url] == 0, "URL already exists");
         require(msg.sender == owner() || _approvedMinters[msg.sender], "Caller is not allowed to mint");
         _tokenIdCounter.increment();
         address owner = _msgSender();
@@ -56,7 +56,7 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
         _safeMint(owner, newTokenId);
         _isClone[newTokenId] = false;
         _setTokenURI(newTokenId, _tokenURI);
-        _urlToTokenId[_url] = newTokenId;
+        _urlToTokenId[_url].push(newTokenId);
         _ownedTokens[owner].push(newTokenId);
         _allTokens.push(newTokenId);
         _totalMintedOriginalTokens++;
@@ -64,7 +64,7 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
         
     }
 
-    function mintClone(uint256 tokenId, string memory _tokenURI/* string memory _url*/) public payable {
+    function mintClone(uint256 tokenId, string memory _tokenURI, string memory _url) public payable {
         // clones should allow duplciates
         // require(_urlToTokenId[_url] == 0, "URL already exists");
         require(_exists(tokenId), "Invalid token ID");
@@ -77,7 +77,7 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
         _safeMint(msg.sender, newTokenId);
         _isClone[newTokenId] = true;
         _cloneOf[newTokenId] = tokenId;
-        // _urlToTokenId[_url] = newTokenId;
+        _urlToTokenId[_url].push(newTokenId);
         // the clone still has a unique metadata info
         _setTokenURI(newTokenId, _tokenURI);
         // keep track of all clones of the original token
@@ -225,17 +225,18 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
         _defaultClonePrice = newPrice;
     }
 
-    function getTokenIdByUrl(string memory _url) public view returns (uint256) {
-        return _urlToTokenId[_url];
-    }
+    // function getTokenIdByUrl(string memory _url) public view returns (uint256) {
+    //     return _urlToTokenId[_url];
+    // }
 
-    function burnToken(uint256 tokenId, string memory _url) public {
+    function burnToken(uint256 tokenId/*, string memory _url*/) public {
         // Only allow the owner of the token to burn it
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not owner nor approved");
-        uint256 token = _urlToTokenId[_url];
-        require(token == tokenId, "Token ID does not match URL");
+        // @todo remove url from _urlToTokenId
+        // uint256 token = _urlToTokenId[_url];
+        // require(token == tokenId, "Token ID does not match URL");
         
-        delete _urlToTokenId[_url];
+        // delete _urlToTokenId[_url];
         _burn(tokenId);
     }
 
@@ -267,11 +268,6 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
         // Clear other token metadata
         delete _isClone[tokenId];
         delete _clonePrice[tokenId];
-        
-        // @todo: clean up _urlToTokenId
-        // assuming _urlToTokenId can be reversed to get URL by tokenId
-        // string memory tokenUrl = getTokenUrlByTokenId(tokenId);
-        // delete _urlToTokenId[tokenUrl];
 
          // Clean up creator mapping
         delete _idToCreator[tokenId];
@@ -303,10 +299,6 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
 
     function withdraw() public onlyOwner {
         payable(owner()).transfer(address(this).balance);
-    }
-    
-    function setDescription(string memory _description) public onlyOwner {
-        description = _description;
     }
 
     function updateContract(string memory _description, uint256 _newPrice, address[] memory _minters) public onlyOwner {
