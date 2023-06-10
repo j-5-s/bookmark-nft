@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode, FormEvent } from "react";
+import { useState, useRef, useEffect, ReactNode, FormEvent } from "react";
 import { useAccount } from "wagmi";
 import { BookmarkABI } from "@j5s/contracts";
 import {
@@ -10,13 +10,10 @@ import {
 import { Address } from "../../types";
 import { ChainData } from "../../hooks/useContract";
 
-export type ContractMeta = {
+export type TokenMeta = {
   data?: {
-    tokenId: bigint;
     hasItemizedClonePrice: boolean;
     clonePrice: bigint | undefined;
-    isOwner: boolean;
-    isOwnerOrApprovedMinter: boolean;
   } | null;
   loading?: boolean;
   error?: Error | null;
@@ -36,10 +33,10 @@ type MintFormProps = {
   url: string;
   chainData?: ChainData;
   className?: string;
-  tokenId?: bigint;
+  tokenId?: string;
   clone?: boolean;
   onError?: (error: Error) => void;
-  onLoad?: (metadata: ContractMeta) => void;
+  onLoad?: (metadata: TokenMeta) => void;
   onSubmit?: (data: SubmitData) => void;
 };
 
@@ -58,18 +55,17 @@ export const MintForm = (props: MintFormProps) => {
     onSubmit,
   } = props;
   const account = useAccount();
-  const [errorMessage, setError] = useState<Error | null>(null);
+  // const [errorMessage, setError] = useState<Error | null>(null);
 
   const isOwner = chainData && chainData?.owner === account.address;
 
-  const defaultClonePrice = BigInt(chainData?.defaultClonePrice || 0);
   const isOwnerOrApprovedMinter =
     isOwner ||
     chainData?.approvedMinters?.includes(
       (account?.address || "") as `0x${string}`
     );
 
-  const [contractMetadata, setContractMetadata] = useState<ContractMeta>({
+  const tokenMetaRef = useRef<TokenMeta>({
     data: null,
     loading: true,
     error: null,
@@ -85,11 +81,11 @@ export const MintForm = (props: MintFormProps) => {
     value: undefined as any,
   };
 
-  const clonePrice = contractMetadata?.data?.hasItemizedClonePrice
-    ? contractMetadata.data?.clonePrice
+  const clonePrice = tokenMetaRef.current?.data?.hasItemizedClonePrice
+    ? tokenMetaRef.current.data?.clonePrice
     : chainData?.defaultClonePrice;
 
-  if (!isOwnerOrApprovedMinter && clonePrice) {
+  if (clonePrice && clone) {
     opts.value = clonePrice;
   }
   const { config, error: prepareError } = usePrepareContractWrite(opts);
@@ -128,11 +124,26 @@ export const MintForm = (props: MintFormProps) => {
     ],
   });
 
+  if (
+    cloneDataResponse.status === "success" &&
+    cloneDataResponse?.data?.length
+  ) {
+    tokenMetaRef.current = {
+      data: {
+        hasItemizedClonePrice: cloneDataResponse.data[0]
+          .result as unknown as boolean,
+        clonePrice: cloneDataResponse.data[1].result as unknown as bigint,
+      },
+    };
+  }
+
+  console.log(cloneDataResponse);
+
   useEffect(() => {
-    if (onError && (error || prepareError || errorMessage)) {
-      onError((errorMessage || error || prepareError) as Error);
+    if (onError && (error || prepareError)) {
+      onError((error || prepareError) as Error);
     }
-  }, [error, prepareError, errorMessage, onError]);
+  }, [error, prepareError, onError]);
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -150,28 +161,22 @@ export const MintForm = (props: MintFormProps) => {
   }, [isSuccess, isLoading, isNotificationLoading, data?.hash, onSubmit]);
 
   useEffect(() => {
-    if (!contractMetadata.loading) {
+    if (!tokenMetaRef.current?.loading) {
       if (onLoad) {
-        onLoad(contractMetadata);
+        onLoad(tokenMetaRef.current);
       }
     }
-  }, [contractMetadata, onLoad]);
+  }, [onLoad]);
 
   useEffect(() => {
-    if (onError && !contractMetadata.loading) {
+    if (onError && !tokenMetaRef.current?.loading) {
       if (contractAddress && !isOwnerOrApprovedMinter && !tokenId) {
-        onError(new Error("You must speci. "));
+        onError(new Error("You are not approved to mint this token"));
       } else if (!contractAddress) {
         onError(new Error("Please select a contract address"));
       }
     }
-  }, [
-    contractAddress,
-    isOwnerOrApprovedMinter,
-    tokenId,
-    contractMetadata,
-    onError,
-  ]);
+  }, [contractAddress, isOwnerOrApprovedMinter, tokenId, onError]);
 
   return (
     <form onSubmit={handleSubmit} className={className}>

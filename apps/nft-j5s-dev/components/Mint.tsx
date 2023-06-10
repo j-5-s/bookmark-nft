@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNetwork, useSwitchNetwork, useAccount } from "wagmi";
 import { MintButton } from "./mint/MintButton";
 import { NFTMetadata, NFTAttributes, Address, IpfsTokenURI } from "../types";
@@ -8,7 +8,7 @@ import type { Contract } from "../db/db";
 import type { ChainData } from "../hooks/useContract";
 import { useRouter } from "next/router";
 import { Trait } from "./mint/Trait";
-import { ContractMeta, MintForm, SubmitData } from "./mint/MintForm";
+import { TokenMeta, MintForm, SubmitData } from "./mint/MintForm";
 import { trimHash } from "./util";
 
 type Props = {
@@ -18,6 +18,7 @@ type Props = {
   ipfsHash: string;
   contractAddress: Address;
   clone: boolean;
+  tokenId: string;
 };
 export const Mint = ({
   nftMetadata,
@@ -26,12 +27,13 @@ export const Mint = ({
   contractAddress,
   chainData,
   clone = false,
+  tokenId,
 }: Props) => {
   const network = useNetwork();
   const router = useRouter();
   const { switchNetwork, chains } = useSwitchNetwork();
   const [loading, setIsLoading] = useState(false);
-  const [contractMeta, setContractMeta] = useState<ContractMeta | null>(null);
+  const [tokenMeta, setTokenMeta] = useState<TokenMeta | null>(null);
   const account = useAccount();
 
   const updateContractQueryParam = (
@@ -78,23 +80,29 @@ export const Mint = ({
   };
 
   const [error, setError] = useState<Error | null>(null);
-  const handleError = (error: Error) => {
-    setError(error);
-  };
-  const handleLoad = (contractMeta: ContractMeta) => {
-    setContractMeta(contractMeta);
-  };
+  const handleError = useCallback(
+    (error: Error) => {
+      setError(error);
+    },
+    [setError]
+  );
+  const handleLoad = useCallback((tokenMeta: TokenMeta) => {
+    setTokenMeta(tokenMeta);
+  }, []);
 
   useEffect(() => {
     setError(null);
   }, [contractAddress, account.address]);
 
-  const handleSubmit = (data: SubmitData) => {
-    setIsLoading(data.loading);
-    if (data.success) {
-      router.push(`/address/${contractAddress}`);
-    }
-  };
+  const handleSubmit = useCallback(
+    (data: SubmitData) => {
+      setIsLoading(data.loading);
+      if (data.success) {
+        router.push(`/address/${contractAddress}`);
+      }
+    },
+    [contractAddress, setIsLoading, router]
+  );
 
   return (
     <MintForm
@@ -102,6 +110,8 @@ export const Mint = ({
       url={value.url}
       chainData={chainData}
       contractAddress={contractAddress}
+      tokenId={tokenId}
+      clone={clone}
       className="container mx-auto flex py-6 md:flex-row flex-col"
       onError={handleError}
       onLoad={handleLoad}
@@ -186,12 +196,10 @@ export const Mint = ({
             )}
             <MintButton
               defaultClonePrice={chainData?.defaultClonePrice}
-              hasItemizedClonePrice={
-                !!contractMeta?.data?.hasItemizedClonePrice
-              }
+              hasItemizedClonePrice={!!tokenMeta?.data?.hasItemizedClonePrice}
               disabled={!!error || loading || !contractAddress}
               clone={clone}
-              value={contractMeta?.data?.clonePrice}
+              value={tokenMeta?.data?.clonePrice}
               symbol={network?.chain?.nativeCurrency?.symbol}
             />
           </div>

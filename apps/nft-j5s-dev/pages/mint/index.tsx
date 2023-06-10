@@ -51,7 +51,9 @@ export const parseQueryParams = (query: QueryParams) => {
 
 const MintPage: NextPage<PageProps> = () => {
   const router = useRouter();
-  const clone = useGetFirstQueryParam("clone") === "true";
+
+  const tokenId = useGetFirstQueryParam("tokenId");
+  const clone = !!tokenId;
   const { ipfsHash, contractAddress } = parseQueryParams(router.query);
   const [nftMetadata, setNFTMetadata] = useState<NFTMetadata | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -94,6 +96,7 @@ const MintPage: NextPage<PageProps> = () => {
             ipfsHash={ipfsHash}
             contractAddress={contractAddress as Address}
             clone={clone}
+            tokenId={tokenId}
           />
         )}
       </div>

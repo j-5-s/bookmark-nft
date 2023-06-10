@@ -39,7 +39,7 @@ export const ContractToken = (props: ContractTokenProps) => {
   }, {} as Record<string, string>) as NFTAttributes;
   const ts = new Date(attributes?.Timestamp).toLocaleString();
   const [, ipfsHash] = (tokenChainData?.uri || "").split("//");
-  const mintPath = `/mint?ipfsHash=${ipfsHash}&contractAddress=${address}&network=${network.chain?.network}`;
+  const mintPath = `/mint?ipfsHash=${ipfsHash}&contractAddress=${address}&network=${network.chain?.network}&tokenId=${tokenId}`;
   return (
     <section className="py-6 container mx-auto px-2 md:px-0">
       <div className="flex justify-between mb-2 items-baseline">
@@ -57,16 +57,15 @@ export const ContractToken = (props: ContractTokenProps) => {
             </span>
           </div>
         </div>
-        {!isOwner && (
-          <div>
-            <a
-              href={mintPath}
-              className="flex-1 text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg disabled:opacity-25"
-            >
-              Mint Clone
-            </a>
-          </div>
-        )}
+
+        <div>
+          <a
+            href={mintPath}
+            className="flex-1 text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg disabled:opacity-25"
+          >
+            Mint Clone
+          </a>
+        </div>
       </div>
       <div className="container mx-auto flex flex-col">
         <div className="">
