@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { NFTMetadata, NFTAttributes } from "../types";
 
-export function getFirstQueryParam(key: string) {
+export function useGetFirstQueryParam(key: string) {
   const router = useRouter();
   const param = router.query[key];
 

@@ -20,7 +20,7 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
     mapping(uint256 => uint256) private _clonePrice;
     mapping(uint256 => bool) private _hasClonePrice;
 
-    mapping(string => uint256[]) public _urlToTokenId; 
+    mapping(string => uint256[]) private _urlToTokenId; 
 
     mapping(uint256 => address) private _idToCreator;
     address private _creator;
@@ -64,7 +64,7 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
         
     }
 
-    function mintClone(uint256 tokenId, string memory _tokenURI, string memory _url) public payable {
+    function mintClone(uint256 tokenId, string memory _tokenURI/*, string memory _url*/) public payable {
         // clones should allow duplciates
         // require(_urlToTokenId[_url] == 0, "URL already exists");
         require(_exists(tokenId), "Invalid token ID");
@@ -77,7 +77,7 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
         _safeMint(msg.sender, newTokenId);
         _isClone[newTokenId] = true;
         _cloneOf[newTokenId] = tokenId;
-        _urlToTokenId[_url].push(newTokenId);
+        // urlToTokenId[_url].push(newTokenId);
         // the clone still has a unique metadata info
         _setTokenURI(newTokenId, _tokenURI);
         // keep track of all clones of the original token
@@ -221,21 +221,38 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
         return _defaultClonePrice;
     }
 
-    function setDefaultClonePrice(uint256 newPrice) public onlyOwner {
-        _defaultClonePrice = newPrice;
+   /**
+    *  _urlToTokenId is used to maintain a list of versions
+    * for a given url.  
+    *
+    */
+
+    function getTokenIdByUrl(string memory _url) public view returns (uint256[] memory) {
+        return _urlToTokenId[_url];
     }
 
-    // function getTokenIdByUrl(string memory _url) public view returns (uint256) {
-    //     return _urlToTokenId[_url];
-    // }
+    function removeTokenFromURL(string memory url, uint256 tokenId) internal {
+        uint256[] storage tokenIds = _urlToTokenId[url];
 
-    function burnToken(uint256 tokenId/*, string memory _url*/) public {
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            if (tokenIds[i] == tokenId) {
+                // Swap the element to be removed with the last element
+                tokenIds[i] = tokenIds[tokenIds.length - 1];
+                tokenIds.pop();
+                break;
+            }
+        }
+    }
+
+
+
+    function burnToken(uint256 tokenId, string memory _url) public {
         // Only allow the owner of the token to burn it
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not owner nor approved");
         // @todo remove url from _urlToTokenId
         // uint256 token = _urlToTokenId[_url];
         // require(token == tokenId, "Token ID does not match URL");
-        
+        removeTokenFromURL(_url, tokenId);
         // delete _urlToTokenId[_url];
         _burn(tokenId);
     }

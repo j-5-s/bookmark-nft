@@ -1,18 +1,18 @@
 import { Header } from "../../../components/header";
 import { useFetchNFT } from "../../../hooks/useFetchNFT";
-import { getFirstQueryParam } from "../../../components/util";
+import { useGetFirstQueryParam } from "../../../components/util";
 import { ContractToken } from "../../../components/collection/contract/ContractToken";
 import { SearchField } from "../../../components/collection/SearchField";
 
 export default function NFTPage() {
-  const tokenId = getFirstQueryParam("tokenId");
-  const contractAddress = getFirstQueryParam("address");
+  const tokenId = useGetFirstQueryParam("tokenId");
+  const contractAddress = useGetFirstQueryParam("address");
   const { data, tokenURI, tokenChainData } = useFetchNFT({
     tokenId: BigInt(tokenId),
     contractAddress: contractAddress as `0x${string}`,
   });
-  const search = getFirstQueryParam("search");
-  const networkParam = getFirstQueryParam("network");
+  const search = useGetFirstQueryParam("search");
+  const networkParam = useGetFirstQueryParam("network");
   // rest of your component logic goes here
   return (
     <section className="text-gray-600 body-font">

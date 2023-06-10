@@ -1,15 +1,15 @@
 import type { NextPage } from "next";
 import { Header } from "../../components/header";
 import { MetadataInstructions } from "../../components/deploy/MetadataInstructions";
-import { getFirstQueryParam } from "../../components/util";
+import { useGetFirstQueryParam } from "../../components/util";
 import { AddressString } from "../../types";
 import { useContract } from "../../hooks/useContract";
 
 const DeployedPage: NextPage = () => {
-  const transactionHash = getFirstQueryParam(
+  const transactionHash = useGetFirstQueryParam(
     "transactionHash"
   ) as AddressString;
-  const contractAddress = getFirstQueryParam(
+  const contractAddress = useGetFirstQueryParam(
     "contractAddress"
   ) as AddressString;
 

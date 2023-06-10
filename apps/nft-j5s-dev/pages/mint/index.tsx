@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import { Mint } from "../../components/Mint";
 import { Header } from "../../components/header";
 import { NFTMetadata, Address, IpfsTokenURI } from "../../types";
-import { fetchData } from "../../components/util";
+import { fetchData, useGetFirstQueryParam } from "../../components/util";
 import { useContract } from "../../hooks/useContract";
 import { MintLoading } from "../../components/mint/MintLoading";
 type PageProps = {
@@ -51,6 +51,7 @@ export const parseQueryParams = (query: QueryParams) => {
 
 const MintPage: NextPage<PageProps> = () => {
   const router = useRouter();
+  const clone = useGetFirstQueryParam("clone") === "true";
   const { ipfsHash, contractAddress } = parseQueryParams(router.query);
   const [nftMetadata, setNFTMetadata] = useState<NFTMetadata | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -92,6 +93,7 @@ const MintPage: NextPage<PageProps> = () => {
             tokenURI={tokenURI}
             ipfsHash={ipfsHash}
             contractAddress={contractAddress as Address}
+            clone={clone}
           />
         )}
       </div>

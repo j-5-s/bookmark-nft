@@ -17,6 +17,7 @@ type Props = {
   tokenURI: IpfsTokenURI;
   ipfsHash: string;
   contractAddress: Address;
+  clone: boolean;
 };
 export const Mint = ({
   nftMetadata,
@@ -24,6 +25,7 @@ export const Mint = ({
   ipfsHash,
   contractAddress,
   chainData,
+  clone = false,
 }: Props) => {
   const network = useNetwork();
   const router = useRouter();
@@ -188,7 +190,7 @@ export const Mint = ({
                 !!contractMeta?.data?.hasItemizedClonePrice
               }
               disabled={!!error || loading || !contractAddress}
-              isOwner={contractMeta?.data?.isOwnerOrApprovedMinter}
+              clone={clone}
               value={contractMeta?.data?.clonePrice}
               symbol={network?.chain?.nativeCurrency?.symbol}
             />

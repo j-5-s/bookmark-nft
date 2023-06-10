@@ -3,13 +3,13 @@ import type { NextPage } from "next";
 import { useSwitchNetwork } from "wagmi";
 import { Header } from "../../components/header";
 import { Collection } from "../../components/collection";
-import { getFirstQueryParam } from "../../components/util";
+import { useGetFirstQueryParam } from "../../components/util";
 import { SearchField } from "../../components/collection/SearchField";
 
 const Search: NextPage = () => {
-  const search = getFirstQueryParam("address");
-  const networkParam = getFirstQueryParam("network");
-  const importsContractToDB = getFirstQueryParam("import") === "true";
+  const search = useGetFirstQueryParam("address");
+  const networkParam = useGetFirstQueryParam("network");
+  const importsContractToDB = useGetFirstQueryParam("import") === "true";
   const { switchNetwork, chains } = useSwitchNetwork();
 
   useEffect(() => {

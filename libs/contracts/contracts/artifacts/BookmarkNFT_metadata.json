@@ -128,30 +128,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "_urlToTokenId",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "address",
 						"name": "to",
 						"type": "address"
@@ -192,6 +168,11 @@
 						"internalType": "uint256",
 						"name": "tokenId",
 						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_url",
+						"type": "string"
 					}
 				],
 				"name": "burnToken",
@@ -454,6 +435,25 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_url",
+						"type": "string"
+					}
+				],
+				"name": "getTokenIdByUrl",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "getTotalMintClonedTokens",
 				"outputs": [
@@ -545,11 +545,6 @@
 					{
 						"internalType": "string",
 						"name": "_tokenURI",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "_url",
 						"type": "string"
 					}
 				],
@@ -711,19 +706,6 @@
 					}
 				],
 				"name": "setClonePrice",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "newPrice",
-						"type": "uint256"
-					}
-				],
-				"name": "setDefaultClonePrice",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -913,7 +895,11 @@
 		},
 		"userdoc": {
 			"kind": "user",
-			"methods": {},
+			"methods": {
+				"getTokenIdByUrl(string)": {
+					"notice": "_urlToTokenId is used to maintain a list of versions for a given url.  "
+				}
+			},
 			"version": 1
 		}
 	},
@@ -1030,11 +1016,11 @@
 			]
 		},
 		"contracts/BookmarkNFT.sol": {
-			"keccak256": "0xbe342cc1954cc78232babaa085359c8add44e4fbcc8c63a7eeabf2ad80395563",
+			"keccak256": "0x197fc18ecef6d82912e10668d76e3b0e17d65d2481608c0b73da8a2781270786",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://25e2490df2368b5cb075baf7d3d09acdf52d69bebc18c51fe1446a7285f84b50",
-				"dweb:/ipfs/Qmen4P73FkoaMr5JJStLLkRkhMGFLVy8oYagcVzd4WKGjd"
+				"bzz-raw://a887d17de236cfbecd358a419c7619fd8a3ad57064866f96752e41526b79bd4f",
+				"dweb:/ipfs/QmQSFyMEJBAgTvewyApRH59ywrejSUqhrCATFkmfgasY3a"
 			]
 		}
 	},

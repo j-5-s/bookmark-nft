@@ -27,6 +27,14 @@
       "options": {
         "command": "tsc --project libs/contracts/tsconfig.build.json"
       }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "dependsOn": [],
+      "options": {
+        "command": "remixd -s libs/contracts"
+      }
     }
   }
 }

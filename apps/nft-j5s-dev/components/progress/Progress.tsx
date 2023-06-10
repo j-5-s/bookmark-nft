@@ -1,13 +1,13 @@
 import cs from "classnames";
-import { getFirstQueryParam } from "../util";
+import { useGetFirstQueryParam } from "../util";
 
 type Props = {
   step: number;
 };
 
 export const Progress = (props: Props) => {
-  const transactionHash = getFirstQueryParam("transactionHash");
-  const contractAddress = getFirstQueryParam("contractAddress");
+  const transactionHash = useGetFirstQueryParam("transactionHash");
+  const contractAddress = useGetFirstQueryParam("contractAddress");
   const { step } = props;
   let deployed;
   if (step >= 3 && contractAddress) {

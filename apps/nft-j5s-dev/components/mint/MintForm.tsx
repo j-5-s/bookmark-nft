@@ -36,6 +36,8 @@ type MintFormProps = {
   url: string;
   chainData?: ChainData;
   className?: string;
+  tokenId?: bigint;
+  clone?: boolean;
   onError?: (error: Error) => void;
   onLoad?: (metadata: ContractMeta) => void;
   onSubmit?: (data: SubmitData) => void;
@@ -49,14 +51,17 @@ export const MintForm = (props: MintFormProps) => {
     chainData,
     children,
     className,
+    tokenId,
+    clone = false,
     onLoad,
     onError,
     onSubmit,
   } = props;
   const account = useAccount();
   const [errorMessage, setError] = useState<Error | null>(null);
-  const [tokenId, setTokenId] = useState<bigint | undefined>();
+
   const isOwner = chainData && chainData?.owner === account.address;
+
   const defaultClonePrice = BigInt(chainData?.defaultClonePrice || 0);
   const isOwnerOrApprovedMinter =
     isOwner ||
@@ -73,9 +78,9 @@ export const MintForm = (props: MintFormProps) => {
   const opts = {
     address: contractAddress,
     abi: BookmarkABI,
-    functionName: !isOwnerOrApprovedMinter ? "mintClone" : "mintNFT",
-    args: !isOwnerOrApprovedMinter ? [tokenId, tokenURI] : [tokenURI, url],
-    enabled: !isOwnerOrApprovedMinter ? !!tokenId : true,
+    functionName: clone ? "mintClone" : "mintNFT",
+    args: clone ? [tokenId, tokenURI] : [tokenURI, url],
+    enabled: isOwner || (clone && !!tokenId),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: undefined as any,
   };
@@ -88,7 +93,7 @@ export const MintForm = (props: MintFormProps) => {
     opts.value = clonePrice;
   }
   const { config, error: prepareError } = usePrepareContractWrite(opts);
-  console.log(prepareError);
+
   const {
     data,
     error,
@@ -99,16 +104,7 @@ export const MintForm = (props: MintFormProps) => {
     hash: data?.hash,
   });
 
-  useEffect(() => {
-    if (onError && (error || prepareError || errorMessage)) {
-      onError((errorMessage || error || prepareError) as Error);
-    }
-  }, [error, prepareError, errorMessage]);
-
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    write?.();
-  };
+  // Clone details
 
   const contractInput = {
     address: contractAddress,
@@ -116,35 +112,8 @@ export const MintForm = (props: MintFormProps) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
 
-  const getTokenIdByUrlResponse = useContractReads({
-    enabled: !!contractAddress,
-    contracts: [
-      {
-        ...contractInput,
-        functionName: "getTokenIdByUrl",
-        args: [url],
-      },
-    ],
-  });
-
-  const getTokenIdByUrlResponseData = getTokenIdByUrlResponse.data?.[0];
-  useEffect(() => {
-    const data = getTokenIdByUrlResponseData;
-    console.log(data);
-    if (data?.status === "success" && data?.result) {
-      setTokenId(data.result as unknown as bigint);
-    } else {
-      // @todo !isOwner is needed because new urls will have an error
-      // response from getTokenIdByUrlResponseData
-      if (data?.status === "failure" && !isOwnerOrApprovedMinter) {
-        setError(new Error(data.error.message));
-      }
-      setTokenId(undefined);
-    }
-  }, [getTokenIdByUrlResponseData, isOwnerOrApprovedMinter]);
-
   const cloneDataResponse = useContractReads({
-    enabled: !!(tokenId && !isOwnerOrApprovedMinter),
+    enabled: !!tokenId,
     contracts: [
       {
         ...contractInput,
@@ -160,51 +129,15 @@ export const MintForm = (props: MintFormProps) => {
   });
 
   useEffect(() => {
-    // no cloning functionality for isOwner
-    if (
-      isOwnerOrApprovedMinter &&
-      getTokenIdByUrlResponseData?.status === "success"
-    ) {
-      setContractMetadata({
-        data: {
-          isOwner: !!isOwner,
-          isOwnerOrApprovedMinter: !!isOwnerOrApprovedMinter,
-          tokenId: getTokenIdByUrlResponseData.result as unknown as bigint,
-          hasItemizedClonePrice: false,
-          clonePrice: undefined,
-        },
-      });
+    if (onError && (error || prepareError || errorMessage)) {
+      onError((errorMessage || error || prepareError) as Error);
     }
-  }, [getTokenIdByUrlResponseData?.status, isOwner, isOwnerOrApprovedMinter]);
+  }, [error, prepareError, errorMessage, onError]);
 
-  useEffect(() => {
-    if (getTokenIdByUrlResponseData?.status === "success" && !isOwner) {
-      const [hasClonePriceData, clonePriceData] = cloneDataResponse.data || [];
-      let clonePrice = clonePriceData?.result as unknown as bigint;
-
-      if (typeof clonePrice === "undefined") {
-        clonePrice = defaultClonePrice;
-      }
-
-      setContractMetadata({
-        data: {
-          isOwner: !!isOwner,
-          isOwnerOrApprovedMinter: !!isOwnerOrApprovedMinter,
-          tokenId: getTokenIdByUrlResponseData.result as unknown as bigint,
-          hasItemizedClonePrice:
-            hasClonePriceData?.result as unknown as boolean,
-          clonePrice,
-        },
-        loading: false,
-      });
-    }
-  }, [
-    tokenId,
-    isOwner,
-    cloneDataResponse?.status,
-    getTokenIdByUrlResponseData?.result,
-    defaultClonePrice,
-  ]);
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    write?.();
+  };
 
   useEffect(() => {
     if (onSubmit) {
@@ -214,7 +147,7 @@ export const MintForm = (props: MintFormProps) => {
         success: isSuccess,
       });
     }
-  }, [isSuccess, isLoading, isNotificationLoading, data?.hash]);
+  }, [isSuccess, isLoading, isNotificationLoading, data?.hash, onSubmit]);
 
   useEffect(() => {
     if (!contractMetadata.loading) {
@@ -222,17 +155,23 @@ export const MintForm = (props: MintFormProps) => {
         onLoad(contractMetadata);
       }
     }
-  }, [contractMetadata]);
+  }, [contractMetadata, onLoad]);
 
   useEffect(() => {
     if (onError && !contractMetadata.loading) {
       if (contractAddress && !isOwnerOrApprovedMinter && !tokenId) {
-        onError(new Error("Token does not exist to clone. "));
+        onError(new Error("You must speci. "));
       } else if (!contractAddress) {
         onError(new Error("Please select a contract address"));
       }
     }
-  }, [contractAddress, isOwnerOrApprovedMinter, tokenId, contractMetadata]);
+  }, [
+    contractAddress,
+    isOwnerOrApprovedMinter,
+    tokenId,
+    contractMetadata,
+    onError,
+  ]);
 
   return (
     <form onSubmit={handleSubmit} className={className}>

@@ -1,14 +1,14 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import type { NextPage } from "next";
 import { Header } from "../components/header";
-import { getFirstQueryParam } from "../components/util";
+import { useGetFirstQueryParam } from "../components/util";
 import { db } from "../db/db";
 import { ContractItem } from "../components/collection/contract/ContractItem";
 import { SearchField } from "../components/collection/SearchField";
 
 const Home: NextPage = () => {
-  const search = getFirstQueryParam("search");
-  const networkParam = getFirstQueryParam("network");
+  const search = useGetFirstQueryParam("search");
+  const networkParam = useGetFirstQueryParam("network");
   const contracts = useLiveQuery(() =>
     db.contracts.orderBy("createdAt").reverse().toArray()
   );
