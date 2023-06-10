@@ -1,11 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useContractReads, useAccount, useNetwork, useBalance } from "wagmi";
 import { db } from "../db/db";
 import { BookmarkABI } from "@j5s/contracts";
 
 type Props = {
   address?: `0x${string}` | undefined;
-  importsContractToDB?: boolean;
   transactionHash?: `0x${string}` | undefined;
 };
 type Balance = {
@@ -34,7 +33,7 @@ type ReturnData = {
 };
 
 export const useContract = (props: Props): ReturnData => {
-  const { address, transactionHash, importsContractToDB = false } = props;
+  const { address, transactionHash } = props;
 
   const { isConnected, address: userAddress } = useAccount();
   const network = useNetwork();
@@ -92,7 +91,7 @@ export const useContract = (props: Props): ReturnData => {
     ],
   });
 
-  const ret = {
+  const ret = useRef<ChainData>({
     name: "",
     symbol: "",
     owner: "",
@@ -102,34 +101,34 @@ export const useContract = (props: Props): ReturnData => {
     createdAt: 0,
     defaultClonePrice: BigInt(0),
     approvedMinters: [],
-  } as ChainData;
+  });
 
   if (balance) {
-    ret.balance = balance;
+    ret.current.balance = balance;
   }
   if (data) {
-    ret.name = data[0].result as unknown as string;
-    ret.symbol = data[1].result as unknown as string;
-    ret.owner = data[2].result as unknown as string;
+    ret.current.name = data[0].result as unknown as string;
+    ret.current.symbol = data[1].result as unknown as string;
+    ret.current.owner = data[2].result as unknown as string;
     // const balance = data[3].result as unknown as number;
     // if (balance) {
     //   ret.balanceOf = balance;
     // }
     const totalTokens = data[3].result as unknown as bigint;
-    ret.totalTokens = totalTokens?.toString();
+    ret.current.totalTokens = totalTokens?.toString();
 
-    ret.creator = data[4].result as unknown as string;
-    ret.description = data[5].result as unknown as string;
+    ret.current.creator = data[4].result as unknown as string;
+    ret.current.description = data[5].result as unknown as string;
     const createdAt = data[6].result as unknown as bigint;
     if (createdAt) {
-      ret.createdAt = Number(createdAt) * 1000;
+      ret.current.createdAt = Number(createdAt) * 1000;
     }
     const defaultClonePrice = data[7].result as unknown as bigint;
     if (typeof defaultClonePrice !== "undefined") {
-      ret.defaultClonePrice = BigInt(defaultClonePrice);
+      ret.current.defaultClonePrice = BigInt(defaultClonePrice);
     }
     const approvedMinters = data[8].result as unknown as `0x${string}`[];
-    ret.approvedMinters = approvedMinters;
+    ret.current.approvedMinters = approvedMinters;
   }
 
   // @todo better error handling.
@@ -137,17 +136,16 @@ export const useContract = (props: Props): ReturnData => {
   if (status === "failure") {
     errorMsg = "Contract not found";
   }
-
   useEffect(() => {
     (async () => {
       if (
-        ret?.name &&
+        ret.current.name &&
         isConnected &&
         address &&
         userAddress &&
-        network?.chain?.network &&
-        importsContractToDB
+        network?.chain?.network
       ) {
+        console.log(ret);
         try {
           const existingContract = await db.contracts.get({
             address,
@@ -157,18 +155,30 @@ export const useContract = (props: Props): ReturnData => {
               address: address as string,
               user: userAddress as string,
               txHash: transactionHash as string,
-              name: ret.name,
+              name: ret.current.name,
               network: network.chain.network,
-              symbol: ret.symbol,
-              creator: ret.creator,
-              owner: ret.owner,
-              description: ret.description,
-              createdAt: ret.createdAt,
+              symbol: ret.current.symbol,
+              creator: ret.current.creator,
+              owner: ret.current.owner,
+              description: ret.current.description,
+              createdAt: ret.current.createdAt,
             });
-            console.log(ret);
             console.log(id, "added to db");
-          } else {
+          } else if (existingContract?.id) {
             // handle case where contract already exists in the DB
+            db.contracts.update(existingContract.id, {
+              address: address as string,
+              user: userAddress as string,
+              txHash: transactionHash as string,
+              name: ret.current.name,
+              network: network.chain.network,
+              symbol: ret.current.symbol,
+              creator: ret.current.creator,
+              owner: ret.current.owner,
+              description: ret.current.description,
+              createdAt: ret.current.createdAt,
+            });
+            console.log("updated", existingContract.id);
           }
         } catch (ex) {
           console.log(ex);
@@ -176,18 +186,15 @@ export const useContract = (props: Props): ReturnData => {
       }
     })();
   }, [
-    data,
     isConnected,
     userAddress,
-    importsContractToDB,
     address,
     transactionHash,
     network?.chain?.network,
-    // @todo ret
   ]);
 
   return {
-    data: data ? ret : undefined,
+    data: data ? ret.current : undefined,
     error: errorMsg,
     loading: isLoading,
   };

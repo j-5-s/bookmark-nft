@@ -39,7 +39,11 @@ export const ContractToken = (props: ContractTokenProps) => {
   }, {} as Record<string, string>) as NFTAttributes;
   const ts = new Date(attributes?.Timestamp).toLocaleString();
   const [, ipfsHash] = (tokenChainData?.uri || "").split("//");
-  const mintPath = `/mint?ipfsHash=${ipfsHash}&contractAddress=${address}&network=${network.chain?.network}&tokenId=${tokenId}`;
+  const mintPath = mounted
+    ? `/mint?ipfsHash=${ipfsHash}&contractAddress=${address}&network=${
+        network.chain?.network || ""
+      }&tokenId=${tokenId}`
+    : "#";
   return (
     <section className="py-6 container mx-auto px-2 md:px-0">
       <div className="flex justify-between mb-2 items-baseline">

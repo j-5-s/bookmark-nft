@@ -67,7 +67,6 @@ export const Collection = (props: CollectionProps) => {
     loading,
   } = useContract({
     address: address as `0x${string}`,
-    importsContractToDB,
   });
 
   const contractLink = getUrl({

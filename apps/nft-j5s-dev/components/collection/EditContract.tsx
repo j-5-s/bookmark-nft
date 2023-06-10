@@ -37,7 +37,6 @@ export const EditContract = ({ chainData, address }: Props) => {
       fields.approvedMinters,
     ],
   });
-  console.log(chainData);
 
   const { isLoading: isLoadingTx, isSuccess: isSuccessTx } =
     useWaitForTransaction({

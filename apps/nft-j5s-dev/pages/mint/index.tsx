@@ -77,7 +77,6 @@ const MintPage: NextPage<PageProps> = () => {
 
   const { data } = useContract({
     address: contractAddress as `0x${string}`,
-    importsContractToDB: true,
   });
 
   const showLoader = !nftMetadata || !mounted;
