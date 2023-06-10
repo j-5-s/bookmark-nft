@@ -13,7 +13,7 @@ export const SearchField = ({ defaultValue = "", network }: Props) => {
     evt.preventDefault();
     let path = `/address/${search}`;
     if (network) {
-      path += "?network=${network}";
+      path += `?network=${network}`;
     }
     router.push(path);
   };
