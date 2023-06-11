@@ -7,10 +7,8 @@ nx serve
 - update readme
 - update homepage
 - clean up step 3
-- document contract
 - remove contract from home page
 - strategy for versioning contract?
-- replace "clone" with "original"
 
 # Post MVP
 

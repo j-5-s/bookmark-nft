@@ -207,24 +207,16 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "getAllMintedTokens",
-				"outputs": [
-					{
-						"internalType": "uint256[]",
-						"name": "",
-						"type": "uint256[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "enum BookmarkNFT.CloneFilter",
 						"name": "filter",
 						"type": "uint8"
+					},
+					{
+						"internalType": "string",
+						"name": "url",
+						"type": "string"
 					}
 				],
 				"name": "getAllMintedTokens",
@@ -383,25 +375,11 @@
 						"internalType": "enum BookmarkNFT.CloneFilter",
 						"name": "filter",
 						"type": "uint8"
-					}
-				],
-				"name": "getOwnedTokens",
-				"outputs": [
+					},
 					{
-						"internalType": "uint256[]",
-						"name": "",
-						"type": "uint256[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "owner",
-						"type": "address"
+						"internalType": "string",
+						"name": "url",
+						"type": "string"
 					}
 				],
 				"name": "getOwnedTokens",
@@ -806,7 +784,7 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "_newPrice",
+						"name": "_newDefaultClonePrice",
 						"type": "uint256"
 					},
 					{
@@ -848,11 +826,119 @@
 				"balanceOf(address)": {
 					"details": "See {IERC721-balanceOf}."
 				},
+				"burnToken(uint256,string)": {
+					"details": "A way for an owner to burn their token and remove it from the list of tokens",
+					"params": {
+						"tokenId": "token ID"
+					}
+				},
 				"getApproved(uint256)": {
 					"details": "See {IERC721-getApproved}."
 				},
+				"getApprovedMinters()": {
+					"details": "A way to see who is approved to mint tokens"
+				},
+				"getClonePrice(uint256)": {
+					"details": "gets the clone price on the specific token",
+					"params": {
+						"tokenId": "token ID"
+					},
+					"returns": {
+						"_0": "clone price"
+					}
+				},
+				"getClonesOfOriginal(uint256)": {
+					"details": "Returns all clones of a given original token",
+					"params": {
+						"tokenId": "original token ID"
+					},
+					"returns": {
+						"_0": "array of token IDs"
+					}
+				},
+				"getContractCreator()": {
+					"details": "Returns the creator of the contract",
+					"returns": {
+						"_0": "address of the creator"
+					}
+				},
+				"getDefaultClonePrice()": {
+					"details": "Returns the default clone price",
+					"returns": {
+						"_0": "default clone price"
+					}
+				},
+				"getHasClonePrice(uint256)": {
+					"details": "gets a boolean flag if the clone price has been set. Used because the clone price could be set to 0 and 0 is also the value when its not set at all.",
+					"params": {
+						"tokenId": "token ID"
+					},
+					"returns": {
+						"_0": "boolean flag"
+					}
+				},
+				"getOriginal(uint256)": {
+					"details": "Returns the original token of a given clone",
+					"params": {
+						"tokenId": "clone token ID"
+					},
+					"returns": {
+						"_0": "original token ID"
+					}
+				},
+				"getTokenCreator(uint256)": {
+					"details": "Returns the creator of a given token",
+					"params": {
+						"tokenId": "token ID"
+					},
+					"returns": {
+						"_0": "address of the creator"
+					}
+				},
+				"getTokenIdByUrl(string)": {
+					"details": "Returns the token ID for a given URL",
+					"params": {
+						"_url": "URL of the tokens"
+					},
+					"returns": {
+						"_0": "uint256 array of token IDs"
+					}
+				},
+				"getTotalMintClonedTokens()": {
+					"details": "Returns the total amount of minted clone tokens",
+					"returns": {
+						"_0": "uint256 count of clone token IDs"
+					}
+				},
+				"getTotalMintOriginalTokens()": {
+					"details": "Returns the total amount of minted original tokens",
+					"returns": {
+						"_0": "uint256 count of original token IDs"
+					}
+				},
+				"getTotalMintedTokens()": {
+					"details": "Returns all minted tokens",
+					"returns": {
+						"_0": "unint256 count of token IDs"
+					}
+				},
 				"isApprovedForAll(address,address)": {
 					"details": "See {IERC721-isApprovedForAll}."
+				},
+				"isClone(uint256)": {
+					"details": "Returns a boolean flag telling if the token is a clone",
+					"params": {
+						"tokenId": "token ID"
+					},
+					"returns": {
+						"_0": "flag of the token"
+					}
+				},
+				"mintClone(uint256,string)": {
+					"details": "Returns the total amount of tokens stored by the contract. A clone allows anyone to mint a token on a contract that is not theirs. However the contract owner gets to set the price of the clone."
+				},
+				"mintNFT(string,string)": {
+					"details": "mints the NFT. Only the owner or approved minters can mint a token. The tokenURI is the metadata of the token. The url is the url of the bookmark."
 				},
 				"name()": {
 					"details": "See {IERC721Metadata-name}."
@@ -875,6 +961,13 @@
 				"setApprovalForAll(address,bool)": {
 					"details": "See {IERC721-setApprovalForAll}."
 				},
+				"setClonePrice(uint256,uint256)": {
+					"details": "sets the clone price for a given token. If not set the default clone price is used",
+					"params": {
+						"newPrice": "new clone price",
+						"tokenId": "token ID"
+					}
+				},
 				"supportsInterface(bytes4)": {
 					"details": "See {IERC165-supportsInterface}."
 				},
@@ -882,13 +975,29 @@
 					"details": "See {IERC721Metadata-symbol}."
 				},
 				"tokenURI(uint256)": {
-					"details": "See {IERC721Metadata-tokenURI}."
+					"params": {
+						"tokenId": "token ID"
+					},
+					"returns": {
+						"_0": "string token URI, ipfs://<hash>"
+					}
 				},
 				"transferFrom(address,address,uint256)": {
 					"details": "See {IERC721-transferFrom}."
 				},
 				"transferOwnership(address)": {
 					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				},
+				"updateContract(string,uint256,address[])": {
+					"details": "A way for the contract owner to updat e the description, approvedMintors, and clone price",
+					"params": {
+						"_description": "the contract details",
+						"_minters": "the new list of approved minters",
+						"_newDefaultClonePrice": "the new defaultClonePrice"
+					}
+				},
+				"withdraw()": {
+					"details": "A way for the contract owner to withdraw any funds that have been sent to the contract"
 				}
 			},
 			"version": 1
@@ -896,8 +1005,8 @@
 		"userdoc": {
 			"kind": "user",
 			"methods": {
-				"getTokenIdByUrl(string)": {
-					"notice": "_urlToTokenId is used to maintain a list of versions for a given url.  "
+				"tokenURI(uint256)": {
+					"notice": "a way to get the tokenURI of a token"
 				}
 			},
 			"version": 1
@@ -1016,11 +1125,11 @@
 			]
 		},
 		"contracts/BookmarkNFT.sol": {
-			"keccak256": "0x197fc18ecef6d82912e10668d76e3b0e17d65d2481608c0b73da8a2781270786",
+			"keccak256": "0x2faeb7ed1d0a075232d4e558c14c08839a10cc0e6b0a87cb48cfb39b3041265e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a887d17de236cfbecd358a419c7619fd8a3ad57064866f96752e41526b79bd4f",
-				"dweb:/ipfs/QmQSFyMEJBAgTvewyApRH59ywrejSUqhrCATFkmfgasY3a"
+				"bzz-raw://a85823c5df6474b9387ba1b37bcea57635f8992cd9fcad7bfc3aa0322498fa3e",
+				"dweb:/ipfs/Qmc7sMnn4LR5cZocKSiGj1j9hE9dnND7eeQs7XHUAiKNB9"
 			]
 		}
 	},

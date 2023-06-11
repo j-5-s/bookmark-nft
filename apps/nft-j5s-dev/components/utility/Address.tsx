@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { useEnsName, useNetwork, useAccount } from "wagmi";
 import { getUrl, trimHash } from "../util";
 import { Check } from "../icons/check";
@@ -21,6 +21,12 @@ export const Address = (props: AddressProps) => {
     link = false,
     href,
   } = props;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const fullAddress = children as `0x${string}`;
   let addr = children as string;
 
@@ -38,6 +44,8 @@ export const Address = (props: AddressProps) => {
   }
 
   const isYou = fullAddress === account.address;
+
+  if (!mounted) return null;
   if (link) {
     const url =
       href ||

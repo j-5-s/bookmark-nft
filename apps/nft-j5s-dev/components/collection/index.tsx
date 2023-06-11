@@ -37,8 +37,8 @@ export const Collection = (props: CollectionProps) => {
     address: address as `0x${string}`,
     abi: BookmarkABI,
     args: myItemsFilter
-      ? [walletClient?.account.address, cloneFilter]
-      : [cloneFilter],
+      ? [walletClient?.account.address, cloneFilter, ""]
+      : [cloneFilter, ""],
     functionName: myItemsFilter ? "getOwnedTokens" : "getAllMintedTokens",
     enabled: myItemsFilter
       ? !!(address && walletClient?.account.address)

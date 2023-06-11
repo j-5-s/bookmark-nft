@@ -145,7 +145,6 @@ export const useContract = (props: Props): ReturnData => {
         userAddress &&
         network?.chain?.network
       ) {
-        console.log(ret);
         try {
           const existingContract = await db.contracts.get({
             address,
@@ -178,7 +177,6 @@ export const useContract = (props: Props): ReturnData => {
               description: ret.current.description,
               createdAt: ret.current.createdAt,
             });
-            console.log("updated", existingContract.id);
           }
         } catch (ex) {
           console.log(ex);

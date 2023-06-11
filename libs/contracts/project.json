@@ -33,7 +33,8 @@
       "outputs": [],
       "dependsOn": [],
       "options": {
-        "command": "remixd -s libs/contracts"
+        "command": "remixd -s .",
+        "cwd": "libs/contracts/contracts"
       }
     }
   }
