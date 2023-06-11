@@ -28,7 +28,7 @@ export const CollectionTable = (props: CollectionTableProps) => {
             Creator
           </th>
           <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-            Clone
+            Original
           </th>
           <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
             Actions

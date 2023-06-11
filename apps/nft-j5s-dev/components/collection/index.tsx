@@ -23,7 +23,7 @@ type ContractData = {
 type SortType = "ascending" | "descending";
 
 export const Collection = (props: CollectionProps) => {
-  const { address, importsContractToDB } = props;
+  const { address } = props;
   const { data: walletClient } = useWalletClient();
   const network = useNetwork();
 

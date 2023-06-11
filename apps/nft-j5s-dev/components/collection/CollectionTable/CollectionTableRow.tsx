@@ -2,6 +2,8 @@ import { useFetchNFT } from "../../../hooks/useFetchNFT";
 import { getAttributesAsKeys, getUrl, trimHash } from "../../util";
 import type { ChainData } from "../../../hooks/useContract";
 import { Address } from "../../utility/Address";
+import { XCircle } from "../../icons/x-circle";
+import { Check } from "../../icons/check";
 
 type CollectionTableRowProps = {
   tokenId: bigint;
@@ -72,7 +74,9 @@ export const CollectionTableRow = (props: CollectionTableRowProps) => {
         </a>
       </td>
 
-      <td className="px-4 py-3">{tokenChainData?.isClone?.toString()}</td>
+      <td className="px-4 py-3">
+        {tokenChainData?.isClone ? <XCircle /> : <Check />}
+      </td>
 
       <td className="px-4 py-3">
         <a

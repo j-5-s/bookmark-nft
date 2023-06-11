@@ -13,7 +13,7 @@ export const UserAgent = (props: UserAgentProps) => {
     const result = new UserAgentParser(userAgent);
     setUserAgentParsed(result.getResult());
   }, [userAgent]);
-  console.log(userAgentParsed);
+
   return (
     <span>
       {userAgentParsed?.browser?.name} {userAgentParsed?.browser?.version}

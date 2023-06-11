@@ -15,13 +15,14 @@ type EditContractProps = {
   address: `0x${string}`;
   tokenId?: bigint;
   metadata?: NFTMetadata | null;
+  isOwner?: boolean;
 };
 
 export const EditContractToken = (props: EditContractProps) => {
   const [editMode, setEditMode] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [errorMsg, setErrorMsg] = useState<Error | null>();
-  const { tokenChainData, address, tokenId, metadata } = props;
+  const { tokenChainData, address, tokenId, metadata, isOwner } = props;
   const network = useNetwork();
   const [fields, setFields] = useState({
     clonePrice: tokenChainData?.clonePrice?.toString(),
@@ -33,7 +34,7 @@ export const EditContractToken = (props: EditContractProps) => {
       clonePrice: tokenChainData?.clonePrice?.toString(),
       hasClonePrice: tokenChainData?.hasClonePrice,
     });
-  }, [tokenChainData?.clonePrice]);
+  }, [tokenChainData?.clonePrice, tokenChainData?.hasClonePrice]);
 
   useEffect(() => {
     setMounted(true);
@@ -74,7 +75,7 @@ export const EditContractToken = (props: EditContractProps) => {
       className="flex flex-col border rounded bg-white p-4 text-xs"
     >
       <h2 className="text-2xl font-medium text-gray-900 title-font mb-2">
-        Owner Management
+        Token Details
       </h2>
       <div className="flex p-2 border-b border-gray-100 mb-2">
         <div className="w-1/4 tracking-widest title-font">Creator</div>
@@ -115,7 +116,6 @@ export const EditContractToken = (props: EditContractProps) => {
                 onChange={(value) => {
                   setFields({
                     hasClonePrice: !!value,
-
                     clonePrice: value,
                   });
                 }}
@@ -135,50 +135,54 @@ export const EditContractToken = (props: EditContractProps) => {
           {errorMsg.message}
         </div>
       )}
-      <div className="flex flex-wrap items-start justify-between">
-        <div>
-          {editMode && (
-            <button
-              disabled={isLoading || isLoadingTx}
-              onClick={() => {
-                setEditMode(true);
-              }}
-              className="mt-4 mr-2 border-blue-500å text-white bg-blue-500 border py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg disabled:opacity-25"
-            >
-              {" "}
-              Save
-            </button>
-          )}
-          {editMode && (
-            <button
-              disabled={isLoading || isLoadingTx}
-              onClick={() => setEditMode(false)}
-              className="mt-4 mr-2 text-blue-500 border-blue-500 border py-2 px-8 focus:outline-none hover:bg-blue-100 rounded text-lg disabled:opacity-25"
-            >
-              {" "}
-              Cancel
-            </button>
-          )}
+      {isOwner && (
+        <div className="flex flex-wrap items-start justify-between">
+          <div>
+            {editMode && (
+              <button
+                disabled={isLoading || isLoadingTx}
+                onClick={() => {
+                  setEditMode(true);
+                }}
+                className="mt-4 mr-2 border-blue-500å text-white bg-blue-500 border py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg disabled:opacity-25"
+              >
+                {" "}
+                Save
+              </button>
+            )}
+            {editMode && (
+              <button
+                disabled={isLoading || isLoadingTx}
+                onClick={() => setEditMode(false)}
+                className="mt-4 mr-2 text-blue-500 border-blue-500 border py-2 px-8 focus:outline-none hover:bg-blue-100 rounded text-lg disabled:opacity-25"
+              >
+                {" "}
+                Cancel
+              </button>
+            )}
+            {!editMode && (
+              <button
+                onClick={() => {
+                  setEditMode(true);
+                  setErrorMsg(null);
+                }}
+                className="mt-4 mr-2 border-blue-500 text-white bg-blue-500 border py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg disabled:opacity-25"
+              >
+                {" "}
+                Edit
+              </button>
+            )}
+          </div>
           {!editMode && (
-            <button
-              onClick={() => {
-                setEditMode(true);
-                setErrorMsg(null);
-              }}
-              className="mt-4 mr-2 border-blue-500 text-white bg-blue-500 border py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg disabled:opacity-25"
-            >
-              {" "}
-              Edit
-            </button>
+            <Burn
+              tokenId={tokenId}
+              address={address}
+              metadata={metadata}
+              onError={(err) => setErrorMsg(err)}
+            />
           )}
         </div>
-        <Burn
-          tokenId={tokenId}
-          address={address}
-          metadata={metadata}
-          onError={(err) => setErrorMsg(err)}
-        />
-      </div>
+      )}
     </form>
   );
 };

@@ -23,6 +23,7 @@ export type TokenChainData = {
   ownerOf: string;
   hasClonePrice: boolean;
   clonePrice: bigint;
+  cloneOf?: bigint;
 };
 
 export const useFetchNFT = (props: Props) => {
@@ -77,6 +78,11 @@ export const useFetchNFT = (props: Props) => {
         functionName: "getHasClonePrice",
         args: [tokenId],
       },
+      {
+        ...contractInput,
+        functionName: "getOriginal",
+        args: [tokenId],
+      },
     ],
   });
 
@@ -87,7 +93,7 @@ export const useFetchNFT = (props: Props) => {
     ownerOf: "",
     clonePrice: BigInt(0),
     hasClonePrice: false,
-  };
+  } as TokenChainData;
 
   if (readsResponse.data) {
     chainData.uri = data as string;
@@ -98,6 +104,11 @@ export const useFetchNFT = (props: Props) => {
     chainData.clonePrice = readsResponse.data[3].result as unknown as bigint;
     chainData.hasClonePrice = readsResponse.data[4]
       .result as unknown as boolean;
+
+    const cloneOf = readsResponse.data[5].result as unknown as bigint;
+    if (cloneOf) {
+      chainData.cloneOf = cloneOf;
+    }
   }
 
   useEffect(() => {

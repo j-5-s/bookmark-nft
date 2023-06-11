@@ -10,7 +10,6 @@ nx serve
 - document contract
 - remove contract from home page
 - strategy for versioning contract?
-- screensize as metadata
 - replace "clone" with "original"
 
 # Post MVP
