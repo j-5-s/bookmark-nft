@@ -85,6 +85,13 @@ type HTMLData = {
   metatags: {
     [key: string]: string | undefined;
   };
+  metadata: {
+    viewport: {
+      height: number;
+      width: number;
+    };
+    userAgent: string;
+  };
   html: string;
   text: string;
 };
@@ -153,8 +160,19 @@ export const getTabHTML = async (tab: chrome.tabs.Tab): Promise<HTMLData> => {
         { name: "author", content: "author" },
       ]);
 
+      const height = window.innerHeight;
+      const width = window.innerWidth;
+      const metadata = {
+        viewport: {
+          height,
+          width,
+        },
+        userAgent: navigator.userAgent,
+      };
+
       return {
         metatags,
+        metadata,
         html: document.documentElement.outerHTML,
         text: document.documentElement.outerText,
       };

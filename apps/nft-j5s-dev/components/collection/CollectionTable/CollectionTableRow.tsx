@@ -58,16 +58,7 @@ export const CollectionTableRow = (props: CollectionTableRowProps) => {
       <td className="px-4 py-3 max-w-xs overflow-scroll whitespace-nowrap">
         {date}
       </td>
-      <td className="px-4 py-3">
-        <a
-          className="text-blue-500 hover:underline"
-          target="_blank"
-          rel="noreferrer"
-          href={tokenURI?.replace("ipfs://", "https://ipfs.io/ipfs/")}
-        >
-          {trimHash(tokenURI, 11, 4)}
-        </a>
-      </td>
+      <td className="px-4 py-3">{attributes?.Viewport}</td>
       <td className="px-4 py-3">
         <a
           href={creatorLink}

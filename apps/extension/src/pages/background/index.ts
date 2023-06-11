@@ -108,7 +108,11 @@ chrome.runtime.onConnect.addListener(function (port) {
         try {
           const tab = await getActiveTab();
           const image = await captureVisibleTab(tab);
-          const { metatags, text } = await getTabHTML(tab);
+          const {
+            metatags,
+            text,
+            metadata: contentMetadata,
+          } = await getTabHTML(tab);
           const ts = new Date().getTime();
           const { settings } = await store.getState<SettingsSlice>();
           const attributes = [
@@ -134,6 +138,16 @@ chrome.runtime.onConnect.addListener(function (port) {
               trait_type: key,
               value: metatags[key],
             });
+          });
+
+          attributes.push({
+            trait_type: "Viewport",
+            value: `${tab.width}x${tab.height}`,
+          });
+
+          attributes.push({
+            trait_type: "User Agent",
+            value: contentMetadata.userAgent,
           });
 
           const metadata = {

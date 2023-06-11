@@ -22,7 +22,7 @@ export const CollectionTable = (props: CollectionTableProps) => {
             Date
           </th>
           <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-            IPFS
+            Viewport (px)
           </th>
           <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
             Creator

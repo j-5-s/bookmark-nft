@@ -15,6 +15,8 @@ export type NFTAttributes = {
   URL: string;
   Timestamp: string;
   Text: string;
+  Viewport: string;
+  "User Agent": string;
 };
 export type Address = AbiTypeToPrimitiveType<"address">;
 

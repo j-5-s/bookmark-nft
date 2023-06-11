@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { useAccount, useNetwork } from "wagmi";
 import type { NFTMetadata, NFTAttributes } from "../../../types";
 import { getImageURIFromIPFS, trimHash } from "../../util";
 import type { TokenChainData } from "../../../hooks/useFetchNFT";
 import { EditContractToken } from "./EditContractToken";
-import { useAccount, useNetwork } from "wagmi";
 import { Address } from "../../utility/Address";
+import { UserAgent } from "../../utility/UserAgent";
+
 type ContractTokenProps = {
   data?: NFTMetadata | null;
   address: `0x${string}`;
@@ -139,6 +141,8 @@ export const ContractToken = (props: ContractTokenProps) => {
                   <Address link trim>
                     {attr.value}
                   </Address>
+                ) : attr.trait_type === "User Agent" ? (
+                  <UserAgent userAgent={attr.value} />
                 ) : (
                   attr.value
                 )}
