@@ -28,13 +28,5 @@
         "linter": "eslint"
       }
     }
-  },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-cloud",
-      "options": {
-        "accessToken": "ZTE3MWFiYjMtODc2Ny00ZjRiLTg4ZjYtNGE2NmFiMzJjYjRjfHJlYWQtd3JpdGU="
-      }
-    }
   }
 }
