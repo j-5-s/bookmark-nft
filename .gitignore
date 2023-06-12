@@ -40,3 +40,6 @@ Thumbs.db
 
 # Next.js
 .next
+
+
+libs/contracts/contracts/artifacts/build-info/

@@ -68,7 +68,7 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
     /**
      * @dev Returns the total amount of tokens stored by the contract. A clone allows anyone to mint a token on a contract that is not theirs. However the contract owner gets to set the price of the clone.
      */
-    function mintClone(uint256 tokenId, string memory _tokenURI) public payable {
+    function mintClone(uint256 tokenId, string memory _tokenURI, string memory _url) public payable {
         require(_exists(tokenId), "Invalid token ID");
         require(!_isClone[tokenId], "Cannot clone a clone");
 
@@ -80,7 +80,7 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
         _safeMint(msg.sender, newTokenId);
         _isClone[newTokenId] = true;
         _cloneOf[newTokenId] = tokenId;
-        // urlToTokenId[_url].push(newTokenId);
+        _urlToTokenId[_url].push(newTokenId);
         // the clone still has a unique metadata info
         _setTokenURI(newTokenId, _tokenURI);
         // keep track of all clones of the original token

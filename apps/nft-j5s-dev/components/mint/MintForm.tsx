@@ -75,7 +75,7 @@ export const MintForm = (props: MintFormProps) => {
     address: contractAddress,
     abi: BookmarkABI,
     functionName: clone ? "mintClone" : "mintNFT",
-    args: clone ? [tokenId, tokenURI] : [tokenURI, url],
+    args: clone ? [tokenId, tokenURI, url] : [tokenURI, url],
     enabled: isOwner || (clone && !!tokenId),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: undefined as any,

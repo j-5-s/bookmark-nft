@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
+import { useRouter } from "next/router";
 import { useContractRead, useWalletClient, useNetwork } from "wagmi";
 import { BookmarkABI } from "@j5s/contracts";
 import { NFTCard } from "./NFTCard";
@@ -13,7 +14,7 @@ import { Address } from "../utility/Address";
 import { EditContract } from "./EditContract";
 type CollectionProps = {
   address: `0x${string}`;
-  importsContractToDB?: boolean;
+  url?: string;
 };
 type ContractData = {
   data: bigint[] | undefined;
@@ -23,9 +24,10 @@ type ContractData = {
 type SortType = "ascending" | "descending";
 
 export const Collection = (props: CollectionProps) => {
-  const { address } = props;
+  const { address, url = "" } = props;
   const { data: walletClient } = useWalletClient();
   const network = useNetwork();
+  const router = useRouter();
 
   const [tokenList, setTokenList] = useState<bigint[]>();
   const [sortType, setSortType] = useState<SortType>("descending");
@@ -37,8 +39,8 @@ export const Collection = (props: CollectionProps) => {
     address: address as `0x${string}`,
     abi: BookmarkABI,
     args: myItemsFilter
-      ? [walletClient?.account.address, cloneFilter, ""]
-      : [cloneFilter, ""],
+      ? [walletClient?.account.address, cloneFilter, url]
+      : [cloneFilter, url],
     functionName: myItemsFilter ? "getOwnedTokens" : "getAllMintedTokens",
     enabled: myItemsFilter
       ? !!(address && walletClient?.account.address)
@@ -61,6 +63,14 @@ export const Collection = (props: CollectionProps) => {
     setMyItemsFilter(value);
   };
 
+  const handleURLFilter = (evt: ChangeEvent<HTMLInputElement>) => {
+    const { value } = evt.target;
+    const query = { ...router.query, url: value };
+    router.push({
+      pathname: router.pathname,
+      query: query,
+    });
+  };
   const {
     data: contractData,
     error,
@@ -169,6 +179,15 @@ export const Collection = (props: CollectionProps) => {
               actions={() => {
                 return (
                   <div className="flex">
+                    <div className="flex items-center mr-2 text-xs">
+                      <input
+                        type="text"
+                        defaultValue={url}
+                        placeholder="URL Filter"
+                        className="border border-gray-200 rounded px-2 py-1 text-xs w-48 lg:w-96"
+                        onBlur={handleURLFilter}
+                      />
+                    </div>
                     <div className="flex items-center mr-2 text-xs">
                       <select
                         value={sortType}
