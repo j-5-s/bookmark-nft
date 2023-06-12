@@ -1,5 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import type { NextPage } from "next";
+import Link from "next/link";
 import { Header } from "../components/header";
 import { useGetFirstQueryParam } from "../components/util";
 import { db } from "../db/db";
@@ -22,12 +23,12 @@ const Home: NextPage = () => {
         <section className="text-gray-600 body-font overflow-hidden flex flex-col px-2 md:px-0">
           <div className="container flex mx-auto py-6 justify-end">
             <div>
-              <a
+              <Link
                 href="/deploy"
                 className="flex-1 text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg disabled:opacity-25"
               >
                 Deploy New Contract
-              </a>
+              </Link>
             </div>
           </div>
           <div className="container  mx-auto">

@@ -119,9 +119,9 @@ export const Collection = (props: CollectionProps) => {
           <Copy />
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 text-xs -m-2 md:-m-4 md:mb-4 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 text-xs -m-2 mb-2 ">
         <EditContract chainData={contractData} address={address} />
-        <div className="bg-white rounded border border-gray-200 m-2 md:m-4 shadow">
+        <div className="bg-white rounded border border-gray-200 m-2 shadow">
           <div className="border-b border-gray-200 px-2 py-3 font-bold">
             More Info
           </div>
