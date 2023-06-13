@@ -32,7 +32,7 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div className="container  mx-auto">
-            <div className="divide-y-2 divide-gray-200">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {contracts?.map((contract, index) => (
                 <ContractItem key={index} contract={contract} />
               ))}

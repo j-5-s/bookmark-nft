@@ -13,7 +13,7 @@ const assetsDir = resolve(root, "assets");
 const outDir = resolve(__dirname, "dist");
 const publicDir = resolve(__dirname, "public");
 
-const isDev = process.env.__DEV__ === "true";
+const isDev = process.env.NX_TASK_TARGET_CONFIGURATION !== "production";
 const isProduction = !isDev;
 
 // ENABLE HMR IN BACKGROUND SCRIPT

@@ -33,6 +33,7 @@ export default function makeManifest(
         );
       });
     }
+
     fs.writeFileSync(
       manifestPath,
       ManifestParser.convertManifestToString(manifest)
@@ -44,15 +45,14 @@ export default function makeManifest(
   return {
     name: "make-manifest",
     buildStart() {
-      if (config.isDev) {
-        makeManifest(distDir);
-      }
+      // if (config.isDev) {
+      //   makeManifest(distDir);
+      // }
     },
     buildEnd() {
-      if (config.isDev) {
-        return;
-      }
-
+      // if (config.isDev) {
+      //   return;
+      // }
       makeManifest(publicDir);
     },
   };

@@ -14,20 +14,20 @@ const Popup: React.FC = () => {
   );
 
   const [fields, setFields] = useState({
-    title: value.personalized?.title || value.title,
+    title: value?.personalized?.title || value?.title,
     description:
-      value.personalized?.description || value?.metatags?.description,
+      value?.personalized?.description || value?.metatags?.description,
   });
 
   useEffect(() => {
-    if (value.metatags?.description || value.metatags?.title) {
+    if (value?.metatags?.description || value?.metatags?.title) {
       setFields((prev) => ({
         ...prev,
-        description: value.metatags?.description,
-        title: value.title,
+        description: value?.metatags?.description,
+        title: value?.title,
       }));
     }
-  }, [value.metatags?.description, value?.title]);
+  }, [value?.metatags?.description, value?.title]);
 
   const handleChange = (field: string) => {
     return (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

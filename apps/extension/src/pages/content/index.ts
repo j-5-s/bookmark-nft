@@ -65,11 +65,19 @@ const captureScreenshot = async (
       showElements();
       const pixelRatio = window.devicePixelRatio;
       stitchScreenshots(screenshots, pixelRatio, "jpeg").then((img) => {
-        chrome.runtime.sendMessage({
-          action: "SCREENSHOTS_FINISHED",
-          screenshots: screenshots,
-          img,
-        });
+        const image = new Image();
+        image.onload = function () {
+          const width = image.width;
+          const height = image.height;
+          chrome.runtime.sendMessage({
+            action: "SCREENSHOTS_FINISHED",
+            screenshots: screenshots,
+            img,
+            width,
+            height,
+          });
+        };
+        image.src = img;
       });
     }
   });

@@ -44,7 +44,6 @@ const manifest: chrome.runtime.ManifestV3 = {
       matches: ["*://*/*"],
     },
   ],
-  foo: "Bar",
 };
 
 export default manifest;

@@ -45,7 +45,7 @@ export const MintLoading = (props: Props) => {
               <a
                 target="_blank"
                 rel="noreferrer"
-                href={`https://ipfs.io/ipfs/${ipfsHash}`}
+                href={`${process.env.NEXT_PUBLIC_IPFS_HOST}/ipfs/${ipfsHash}`}
                 className="text-blue-500 hover:underline"
               >
                 https://ipfs.io/ipfs/{ipfsHash}

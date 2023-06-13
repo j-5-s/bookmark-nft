@@ -107,7 +107,8 @@ chrome.runtime.onConnect.addListener(function (port) {
         const { fields } = msg;
         try {
           const tab = await getActiveTab();
-          const image = await captureVisibleTab(tab);
+          const { dataUrl, height, width } = await captureVisibleTab(tab);
+          console.log("data", dataUrl);
           const {
             metatags,
             text,
@@ -146,6 +147,11 @@ chrome.runtime.onConnect.addListener(function (port) {
           });
 
           attributes.push({
+            trait_type: "Content Size",
+            value: `${width}x${height}`,
+          });
+
+          attributes.push({
             trait_type: "User Agent",
             value: contentMetadata.userAgent,
           });
@@ -165,7 +171,7 @@ chrome.runtime.onConnect.addListener(function (port) {
             const { IpfsHash } = await uploadToPinata({
               pinataApiKey: settings.pinataApiKey,
               pinataSecretApiKey: settings.pinataApiSecret,
-              base64Image: image,
+              base64Image: dataUrl,
             });
 
             metadata.image = `ipfs://${IpfsHash}`;
@@ -206,7 +212,7 @@ chrome.runtime.onConnect.addListener(function (port) {
       (async () => {
         const tab = await getActiveTab();
         const { metatags } = await getTabHTML(tab);
-        const imagePreview = await capturePreview();
+        const { dataUrl } = await capturePreview();
 
         const key = "page";
         const value = {
@@ -219,7 +225,7 @@ chrome.runtime.onConnect.addListener(function (port) {
           },
           network: metatags["network"],
           metatags,
-          preview: imagePreview,
+          preview: dataUrl,
         };
         const { state } = await store.updateState(key, value);
         publish({

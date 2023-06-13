@@ -21,7 +21,7 @@ type MessageListener = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sendResponse: (response?: any) => void
 ) => void;
-type Resolver = (screenshot: string) => void;
+type Resolver = (data: ImageResponse) => void;
 
 /**
  * Returns a listener that will resolve the promise when the screenshot is received
@@ -54,24 +54,35 @@ const getListener = (format = "jpeg", resolve: Resolver) => {
       return true; // Indicates that the response will be sent asynchronously
     } else if (request.action === "SCREENSHOTS_FINISHED") {
       // Handle the screenshots data received from content script
-      resolve(request.img);
+      resolve({
+        dataUrl: request.img,
+        width: request.width,
+        height: request.height,
+      });
       // Send a message back to the content script
     }
   };
   return screenshotListener;
 };
 
-export const capturePreview = (format = "jpeg"): Promise<string> =>
+export const capturePreview = (format = "jpeg"): Promise<ImageResponse> =>
   new Promise((resolve) => {
     chrome.tabs.captureVisibleTab(null, { format }, (dataUrl) => {
-      resolve(dataUrl);
+      resolve({
+        dataUrl,
+      });
     });
   });
 
+type ImageResponse = {
+  dataUrl: string;
+  height?: number;
+  width?: number;
+};
 export const captureVisibleTab = (
   tab: chrome.tabs.Tab,
   format = "jpeg"
-): Promise<string> =>
+): Promise<ImageResponse> =>
   new Promise((resolve) => {
     const listener = getListener(format, resolve);
     chrome.runtime.onMessage.removeListener(listener);
