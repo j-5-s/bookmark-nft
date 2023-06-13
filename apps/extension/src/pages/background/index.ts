@@ -108,7 +108,6 @@ chrome.runtime.onConnect.addListener(function (port) {
         try {
           const tab = await getActiveTab();
           const { dataUrl, height, width } = await captureVisibleTab(tab);
-          console.log("data", dataUrl);
           const {
             metatags,
             text,

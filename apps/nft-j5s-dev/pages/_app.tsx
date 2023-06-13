@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./styles.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
@@ -6,6 +7,7 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { Analytics } from "@vercel/analytics/react";
 import { mainnet, polygon, sepolia, polygonMumbai } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+import { AppProvider } from "../components/provider/AppProvider";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -33,12 +35,14 @@ const wagmiConfig = createConfig({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
-        <Analytics />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <AppProvider>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <Component {...pageProps} />
+          <Analytics />
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </AppProvider>
   );
 }
 

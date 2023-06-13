@@ -12,13 +12,10 @@ export const ImageComponent = (props: Props) => {
       const img = new Image();
       img.src = src;
       img.onload = function () {
-        console.log("loaded");
-        console.log(this);
         setImgSrc(src);
       };
     }
   }, [src]);
-  console.log(src);
   return (
     <div>
       <img src={imgSrc} />

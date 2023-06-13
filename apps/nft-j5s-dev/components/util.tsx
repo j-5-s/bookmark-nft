@@ -60,14 +60,14 @@ export const getImageURIFromIPFS = (ipfsHash?: string) => {
   const hash = ipfsHash.replace("ipfs://", "");
   // @todo loading
 
-  return `${process.env.NEXT_PUBLIC_IPFS_HOST}/ipfs/${hash}`;
+  return `https://${process.env.NEXT_PUBLIC_IPFS_HOST}/ipfs/${hash}`;
 };
 
 export const fetchData = async (ipfsHash: string) => {
   try {
     const hash = ipfsHash.replace("ipfs://", "");
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_IPFS_HOST}/ipfs/${hash}`
+      `https://${process.env.NEXT_PUBLIC_IPFS_HOST}/ipfs/${hash}`
     );
 
     if (response.ok) {

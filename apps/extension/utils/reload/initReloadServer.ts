@@ -53,7 +53,7 @@ const debounceDist = debounce(() => {
     ws.send(MessageInterpreter.send({ type: UPDATE_REQUEST_MESSAGE }));
   });
 }, 200);
-chokidar.watch("dist").on("all", (event) => {
+chokidar.watch("../../dist/apps/extension").on("all", (event) => {
   // Ignore unlink, unlinkDir and change events
   // that happen in beginning of build:watch and
   // that will cause ws.send() if it takes more than 200ms

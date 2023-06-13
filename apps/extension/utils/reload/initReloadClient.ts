@@ -23,7 +23,6 @@ export default function initReloadClient({
 
   socket.addEventListener("message", (event) => {
     const message = MessageInterpreter.receive(String(event.data));
-
     switch (message.type) {
       case UPDATE_REQUEST_MESSAGE: {
         if (needToUpdate) {

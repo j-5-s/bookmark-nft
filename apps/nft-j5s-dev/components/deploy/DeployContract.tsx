@@ -58,16 +58,10 @@ export const DeployContract = () => {
         `/deployed?transactionHash=${data?.transactionHash}&contractAddress=${data?.contractAddress}`
       );
     }
-  }, [data?.contractAddress, data?.transactionHash]);
+  }, [data?.contractAddress, data?.transactionHash, router]);
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    console.log([
-      contract.name,
-      contract.token,
-      contract.description,
-      BigInt(contract.defaultClonePrice),
-    ]);
     if (contract.name && contract.token) {
       try {
         setError(null);

@@ -59,7 +59,7 @@ export const Mint = ({
   }, {}) as NFTAttributes;
 
   const [, imageIPFSHash] = nftMetadata.image.split("ipfs://");
-  const image = `${process.env.NEXT_PUBLIC_IPFS_HOST}/ipfs/${imageIPFSHash}`;
+  const image = `https://${process.env.NEXT_PUBLIC_IPFS_HOST}/ipfs/${imageIPFSHash}`;
   const value = {
     title: nftMetadata.name,
     url: attributes.URL,
@@ -140,7 +140,7 @@ export const Mint = ({
                   target="_blank"
                   rel="noreferrer nofollow"
                   className="text-blue-500 hover:underline text-xs"
-                  href={`${process.env.NEXT_PUBLIC_IPFS_HOST}/ipfs/${ipfsHash}`}
+                  href={`https://${process.env.NEXT_PUBLIC_IPFS_HOST}/ipfs/${ipfsHash}`}
                 >
                   {trimHash(`ipfs://${ipfsHash}`, 9, 4)}
                 </a>

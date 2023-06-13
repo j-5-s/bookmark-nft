@@ -9,6 +9,7 @@ import { Address } from "../../utility/Address";
 import { UserAgent } from "../../utility/UserAgent";
 import { useContract } from "../../../hooks/useContract";
 import { AddressImage } from "../../utility/AddressImage";
+import { TokenImage } from "../../image/TokenImage";
 
 type ContractTokenProps = {
   data?: NFTMetadata | null;
@@ -21,8 +22,7 @@ type ContractTokenProps = {
 export const ContractToken = (props: ContractTokenProps) => {
   const { data, tokenChainData, address, tokenId } = props;
   const { creator } = tokenChainData || {};
-  const { name, image, description } = data || {};
-  const imgUrl = getImageURIFromIPFS(image);
+  const { name, description } = data || {};
   const tokenURI = getImageURIFromIPFS(tokenChainData?.uri);
   const account = useAccount();
   const network = useNetwork();
@@ -32,8 +32,6 @@ export const ContractToken = (props: ContractTokenProps) => {
   const chainResponse = useContract({
     address,
   });
-
-  console.log(chainResponse);
 
   const { data: contractData } = chainResponse;
 
@@ -100,14 +98,7 @@ export const ContractToken = (props: ContractTokenProps) => {
       <div className="container mx-auto flex flex-col">
         <div className="">
           <div className="rounded-lg overflow-hidden border">
-            {imgUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                alt="content"
-                className="object-cover object-center h-full w-full"
-                src={imgUrl}
-              />
-            )}
+            <TokenImage data={data} width={1536} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 mt-4 mb-4 gap-4">
             <div className="text-center sm:py-8 bg-white rounded shadow py-2">

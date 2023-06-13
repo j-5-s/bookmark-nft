@@ -137,8 +137,6 @@ export const MintForm = (props: MintFormProps) => {
     };
   }
 
-  console.log(cloneDataResponse);
-
   useEffect(() => {
     if (onError && (error || prepareError)) {
       onError((error || prepareError) as Error);

@@ -6,6 +6,8 @@ nx serve
 
 - update readme
 - update homepage
+- Next image with dimensions
+- ipfs domain on app (Settings to change from ipfs.io to whatever you have configured)
 - strategy for versioning contract?
 
 # Post MVP
