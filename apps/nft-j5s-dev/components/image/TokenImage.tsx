@@ -58,5 +58,12 @@ export const TokenImage = (props: ITokenImage) => {
   if (!imgData.uri || !aspectRatio) return null;
   const w = widthProp;
   const h = w / aspectRatio;
-  return <NextImage src={imgData.uri} width={w} height={h} alt={name} />;
+  return (
+    <NextImage
+      src={imgData.uri}
+      width={w}
+      height={h}
+      alt={name || "Bookmark"}
+    />
+  );
 };
