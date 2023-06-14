@@ -6,7 +6,7 @@ import { useGetFirstQueryParam } from "../components/util";
 import { db } from "../db/db";
 import { ContractItem } from "../components/collection/contract/ContractItem";
 import { SearchField } from "../components/collection/SearchField";
-import { NoContracts } from "./home/NoContracts";
+import { NoContracts } from "../components/home/NoContracts";
 
 const Home: NextPage = () => {
   const search = useGetFirstQueryParam("search");
