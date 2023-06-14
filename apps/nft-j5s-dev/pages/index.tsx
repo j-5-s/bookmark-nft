@@ -6,6 +6,7 @@ import { useGetFirstQueryParam } from "../components/util";
 import { db } from "../db/db";
 import { ContractItem } from "../components/collection/contract/ContractItem";
 import { SearchField } from "../components/collection/SearchField";
+import { NoContracts } from "./home/NoContracts";
 
 const Home: NextPage = () => {
   const search = useGetFirstQueryParam("search");
@@ -32,11 +33,14 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div className="container  mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {contracts?.map((contract, index) => (
-                <ContractItem key={index} contract={contract} />
-              ))}
-            </div>
+            {!contracts?.length && <NoContracts />}
+            {!!contracts?.length && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {contracts?.map((contract, index) => (
+                  <ContractItem key={index} contract={contract} />
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </div>
