@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { useAccount, useNetwork, useEnsAvatar } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import { formatEther } from "viem";
+import cs from "classnames";
 import type { NFTMetadata, NFTAttributes } from "../../../types";
 import { getImageURIFromIPFS, trimHash } from "../../util";
 import type { TokenChainData } from "../../../hooks/useFetchNFT";
@@ -139,7 +140,11 @@ export const ContractToken = (props: ContractTokenProps) => {
               <div className="w-1/4 tracking-widest title-font">
                 {attr.trait_type}
               </div>
-              <div className="w-3/4">
+              <div
+                className={cs("w-3/4", {
+                  "whitespace-break-spaces": attr.trait_type === "Text",
+                })}
+              >
                 {attr.trait_type === "address" ? (
                   <Address link trim>
                     {attr.value}

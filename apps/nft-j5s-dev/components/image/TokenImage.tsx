@@ -57,13 +57,9 @@ export const TokenImage = (props: ITokenImage) => {
 
   if (!imgData.uri || !aspectRatio) return null;
   const w = widthProp;
-  const h = w / aspectRatio;
+  const h = (w / aspectRatio).toFixed();
   return (
-    <NextImage
-      src={imgData.uri}
-      width={w}
-      height={h}
-      alt={name || "Bookmark"}
-    />
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={imgData.uri} width={w} height={h} alt={name || "Bookmark"} />
   );
 };
