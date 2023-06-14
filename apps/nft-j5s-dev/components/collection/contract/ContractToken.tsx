@@ -32,7 +32,6 @@ export const ContractToken = (props: ContractTokenProps) => {
   const chainResponse = useContract({
     address,
   });
-
   const { data: contractData } = chainResponse;
 
   useEffect(() => {

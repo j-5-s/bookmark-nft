@@ -44,14 +44,14 @@ export const TokenImage = (props: ITokenImage) => {
     } else if (data && (!imgData?.width || !imgData.height)) {
       const img = new Image();
 
-      img.src = imgData.uri || "";
       img.onload = () => {
         setImageData({
-          ...imgData,
+          uri: imgUrl,
           width: img.width,
           height: img.height,
         });
       };
+      img.src = imgUrl || "";
     }
   }, [imgData, width, height, data, imgUrl]);
 
