@@ -151,6 +151,8 @@ export const ContractToken = (props: ContractTokenProps) => {
                   </Address>
                 ) : attr.trait_type === "User Agent" ? (
                   <UserAgent userAgent={attr.value} />
+                ) : attr.trait_type === "Timestamp" ? (
+                  new Date(attr.value).toLocaleString()
                 ) : (
                   attr.value
                 )}

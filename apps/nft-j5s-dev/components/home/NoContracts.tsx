@@ -37,7 +37,7 @@ export const NoContracts = () => {
             >
               https://j5s.dev
             </a>{" "}
-            (the creator of this site)
+            (me)
           </p>
         </div>
       </div>
