@@ -7,6 +7,7 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { Analytics } from "@vercel/analytics/react";
 import { mainnet, polygon, sepolia, polygonMumbai } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 import { AppProvider } from "../components/provider/AppProvider";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -17,7 +18,12 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
       ? [sepolia, polygonMumbai]
       : []),
   ],
-  [publicProvider()]
+  [
+    alchemyProvider({
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string,
+    }),
+    publicProvider(),
+  ]
 );
 
 const { connectors } = getDefaultWallets({
