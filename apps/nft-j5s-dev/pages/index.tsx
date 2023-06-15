@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import type { NextPage } from "next";
 import Link from "next/link";
@@ -11,9 +12,18 @@ import { NoContracts } from "../components/home/NoContracts";
 const Home: NextPage = () => {
   const search = useGetFirstQueryParam("search");
   const networkParam = useGetFirstQueryParam("network");
+  const [loading, setIsLoading] = useState(true);
   const contracts = useLiveQuery(() =>
     db.contracts.orderBy("createdAt").reverse().toArray()
   );
+
+  useEffect(() => {
+    if (typeof contracts?.length === "number") {
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [contracts?.length]);
 
   return (
     <section className="text-gray-600 body-font flex flex-col min-h-screen">
@@ -33,7 +43,7 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div className="container  mx-auto">
-            {!contracts?.length && <NoContracts />}
+            {!contracts?.length && !loading && <NoContracts />}
             {!!contracts?.length && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {contracts?.map((contract, index) => (

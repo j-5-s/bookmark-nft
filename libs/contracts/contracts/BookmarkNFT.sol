@@ -7,6 +7,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract BookmarkNFT is ERC721URIStorage, Ownable {
+
+    uint public constant version = 1;
+
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 

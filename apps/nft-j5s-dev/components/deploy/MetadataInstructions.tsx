@@ -12,8 +12,8 @@ export const MetadataInstructions = (props: Props) => {
   const network = useNetwork();
   const [networkState, setNetworkState] = useState<string>();
   const { contractAddress } = props;
-  const metaTagHtml = `<meta name="nft_contract_address" content="${contractAddress}" />
-<meta name="nft_contract_network" content="${network?.chain?.network}" />`;
+  const metaTagHtml = `<meta name="nft-contract-address" content="${contractAddress}" />
+<meta name="nft-contract-network" content="${network?.chain?.network}" />`;
   useEffect(() => {
     setNetworkState(network?.chain?.network);
   }, [network?.chain?.network]);
@@ -61,7 +61,7 @@ export const MetadataInstructions = (props: Props) => {
               <div className=" flex border-b border-gray-200 w-full items-center">
                 <span className="text-gray-500">name</span>
                 <span className="ml-auto text-gray-900 text-xs">
-                  nft_contract_address
+                  nft-contract-address
                 </span>
               </div>
               <div className="flex border-b border-gray-200 py-2 w-full items-center mb-8">
@@ -77,7 +77,7 @@ export const MetadataInstructions = (props: Props) => {
               <div className=" flex border-b border-gray-200 w-full items-center">
                 <span className="text-gray-500">name</span>
                 <span className="ml-auto text-gray-900 text-xs">
-                  nft_contract_network
+                  nft-contract-network
                 </span>
               </div>
               <div className="flex border-b border-gray-200 py-2 w-full items-center mb-8">

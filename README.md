@@ -1,11 +1,25 @@
-# Website
+# nft.j5s.dev
 
-nx serve
+This repo contains
 
-## Todo for MVP
+- [EVM Smart contract](./libs/contracts/)
+- [Chrome Extension](./apps/extension/)
+- [Dapp (j5s.nft.dev repo)](./apps/nft-j5s-dev/)
 
-- update readme
-- strategy for versioning contract?
+![diagram](docs/nft.j5s.dev.jpg)
+
+## How to use
+
+### pre-requisites
+
+- [Chrome metamask extension](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn)
+- Some Matic or Ether in your wallet
+  - Polygon Mumbai and Ethereum Sepolia testnets are available for testing
+
+### Step 1: Deploy
+
+Deploy a smart contract on [nft.j5s.dev/deploy](https://nft.j5s.dev/deploy)
+![deploy](docs/deploy.png)
 
 # Post MVP
 

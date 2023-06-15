@@ -36,6 +36,16 @@
         "command": "remixd -s .",
         "cwd": "libs/contracts/contracts"
       }
+    },
+
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "dependsOn": [],
+      "options": {
+        "command": "hardhat test",
+        "cwd": "libs/contracts"
+      }
     }
   }
 }
