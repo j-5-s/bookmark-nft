@@ -1,12 +1,39 @@
 # nft.j5s.dev
 
-This repo contains
+This documentation is written for my future self and any curios developers looking to play around with smart contracts, chrome extensions, and React. It requires some knowledge of frontend software development and Ethereum blockchain.
 
-- [EVM Smart contract](./libs/contracts/)
-- [Chrome Extension](./apps/extension/)
-- [Dapp (j5s.nft.dev repo)](./apps/nft-j5s-dev/)
+Technologies used are:
+
+- [Typescript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [React](https://react.dev/)
+- [Next](https://nextjs.org/)
+- [NX](https://nx.dev/)
+- [Solidity](https://soliditylang.org/)
+- [Hardhat](https://hardhat.org/)
+- [Jest](https://jestjs.io/) (React tests)
+- [Mocha](https://mochajs.org/) (smart contract tests)
+
+This project is a monorepo repo containing 2 apps and 1 library:
+
+Apps
+
+- [./apps/extension/](./apps/extension/) - Chrome Extension - React
+- [./apps/nft-j5s-dev/](./apps/nft-j5s-dev/) - React Dapp ([j5s.nft.dev](https://nft.j5s.dev/) website)
+
+Library
+
+- [./libs/contracts/](./libs/contracts/) - Solidity Smart contract
+
+Architectural Diagram / Flow
 
 ![diagram](docs/nft.j5s.dev.jpg)
+
+## The Inspiration / Idea
+
+When creating [a blog](https://www.j5s.dev/blog) I thought it would be possible someone would steal my content at some point given the [duplicate results on Google](https://www.searchenginejournal.com/google-answers-why-entire-top-10-is-stolen-content/434317/#close).
+
+This sparked [an idea](https://www.j5s.dev/blog/nft-copyright-extension) of using NFT's to timestamp content for verifiable proof of ownership. As many of my side projects do, the idea has grown a bit and changed. Although it's original purpose is still intact, its other purpose is now a book marking engine. I plan on using it to host my bookmarks of my own content as well as my favorite content from other parts of the internet. Sometimes I find [a post so good](https://jacob.energy/hyperstructures.html) it deserves to be minted.
 
 ## How to use
 
@@ -21,7 +48,64 @@ This repo contains
 Deploy a smart contract on [nft.j5s.dev/deploy](https://nft.j5s.dev/deploy)
 ![deploy](docs/deploy.png)
 
-# Post MVP
+This will deploy the contract to the blockchain, such as [this one](https://mumbai.polygonscan.com/address/0x979cee72252fdef80ce7f2563f7cf0fddd3ad2be) on Polygon Mumbai.
 
-- integrating history of tokens for given url into extension
+After deploying you will be redirect to the [/deployed](https://nft.j5s.dev/deployed?transactionHash=0x354eff21480f9ebe1b0a49d296a86ddcc51744829caecaa1305a061c54aba436&contractAddress=0x979cee72252fdef80ce7f2563f7cf0fddd3ad2be) page
+![deployed](./docs/deployed.png) with next steps.
+
+### Step 2: Capture Image/Data
+
+The chrome extension is not published and you will need to build it and load it into chrome.
+
+#### Building the plugin
+
+Clone and install:
+
+```
+git clone git@github.com:j-5-s/bookmark-nft.git
+cd bookmark-nft
+yarn install
+```
+
+Build the extension
+
+```
+nx build @j5s/extension
+```
+
+This will build the extenion in `/dist/apps/extension`.
+Navigate to [chrome://extensions](chrome://extensions) and click "Load unpacked extension". Select the dist folder above.
+
+#### Connecting to Pinata
+
+The extension uses [Pinata](https://www.pinata.cloud/) pinning service to upload metadata and the screenshot to [IPFS](https://ipfs.tech/). You will need to sign up for an account and get an API Key and secret.
+
+Add your keys to the extension (the keys are only used on your machine to interact with the pinata api and not sent anywhere else).
+
+Click the link to set your key
+![pinata-1](./docs/pinata-1.png)
+
+Set the key
+![pinata-2](./docs/pinata-2.png)
+
+After setting the key you will be able to create a NFT from a screenshot:
+
+![pinata-3](./docs/pinata-3.png)
+
+### 3.Minting the NFT
+
+After clicking Mint NFT you will arrive at the `/mint` page:
+![mint-1](docs/mint-1.png)
+
+Above the mint button you will need to select the contract you would like to mint to. Select the contract that you initially deployed and click Mint.
+
+![mint-2](./docs/mint-2.png)
+
+This will trigger Metamask to ask you to confirm your transaction. After doing so you will be taken to the contract display page:
+
+![address](./docs/address-1.png)
+
+# Next steps
+
+- Integrating history of tokens for given url into extension
   - [react diff viewer](https://praneshravi.in/react-diff-viewer/) for text
