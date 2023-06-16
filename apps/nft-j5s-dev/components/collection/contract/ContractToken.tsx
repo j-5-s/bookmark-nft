@@ -57,7 +57,7 @@ export const ContractToken = (props: ContractTokenProps) => {
         network.chain?.network || ""
       }&tokenId=${tokenId}`
     : "#";
-
+  console.log(contractData);
   return (
     <section className="py-6 container mx-auto px-2 md:px-0">
       <div className="flex justify-between mb-2 items-baseline">
@@ -184,6 +184,14 @@ export const ContractToken = (props: ContractTokenProps) => {
           <div className="flex p-2 border-b border-gray-100 mb-2">
             <div className="w-1/4 tracking-widest title-font">Total Tokens</div>
             <div className="w-3/4">{contractData?.totalTokens}</div>
+          </div>
+          <div className="flex p-2 border-b border-gray-100 mb-2">
+            <div className="w-1/4 tracking-widest title-font">Created At</div>
+            <div className="w-3/4">
+              {contractData?.createdAt
+                ? new Date(contractData?.createdAt).toLocaleString()
+                : ""}
+            </div>
           </div>
           <div className="flex p-2 border-b border-gray-100 mb-2">
             <div className="w-1/4 tracking-widest title-font">Description</div>
