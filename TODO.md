@@ -1,0 +1,2 @@
+- explore opensea attributes
+- chain icons
