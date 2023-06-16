@@ -3,8 +3,8 @@ export const NoContracts = () => {
   const exampleContractUrl = process.env.NEXT_PUBLIC_EXAMPLE_CONTRACT_ADDRESS;
   return (
     <section className="text-gray-600 body-font">
-      <div className="container px-5 py-24 flex items-center flex-col">
-        <div className="w-[400px] py-[25px] md:w-[500px]  text-center md:py-[110px] bg-white rounded-full border shadow">
+      <div className="container px-5 py-6 md:py-24 flex items-center flex-col">
+        <div className="w-[320px] py-[30px] md:w-[500px]  text-center md:py-[110px] bg-white rounded-full border shadow">
           <div
             role="status"
             className="mb-4 flex justify-center text-center items-center ml-1"

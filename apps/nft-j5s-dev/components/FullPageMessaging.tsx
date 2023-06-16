@@ -3,9 +3,10 @@ import { Loader } from "./icons/loader";
 type FullPageMessagingProps = {
   error?: string;
   loading?: boolean;
+  message?: string;
 };
 export const FullPageMessaging = (props: FullPageMessagingProps) => {
-  const { error, loading } = props;
+  const { error, loading, message } = props;
   return (
     <div className="text-gray-600 body-font py-24">
       <div className="container px-5 py-24 mx-auto">
@@ -17,6 +18,7 @@ export const FullPageMessaging = (props: FullPageMessagingProps) => {
               Oops an error occurred: {error}
             </p>
           )}
+          {message && <p className="leading-relaxed text-lg">{message}</p>}
           {loading && (
             <p className="leading-relaxed text-lg">
               Searching the blockchain...

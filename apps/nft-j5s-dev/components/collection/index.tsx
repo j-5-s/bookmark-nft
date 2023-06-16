@@ -75,6 +75,7 @@ export const Collection = (props: CollectionProps) => {
     data: contractData,
     error,
     loading,
+    isConnected,
   } = useContract({
     address: address as `0x${string}`,
   });
@@ -94,6 +95,14 @@ export const Collection = (props: CollectionProps) => {
 
   if (loading) {
     return <FullPageMessaging loading />;
+  }
+
+  if (!isConnected) {
+    return (
+      <FullPageMessaging
+        message={`The page requires connection to the blockchain. Please click Connect Wallet`}
+      />
+    );
   }
 
   const ts = contractData?.createdAt

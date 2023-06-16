@@ -30,6 +30,7 @@ type ReturnData = {
   data?: ChainData;
   loading: boolean;
   error?: string;
+  isConnected: boolean;
 };
 
 export const useContract = (props: Props): ReturnData => {
@@ -40,7 +41,7 @@ export const useContract = (props: Props): ReturnData => {
 
   const { data: balance } = useBalance({
     address,
-    enabled: !!address,
+    enabled: !!address && isConnected,
   });
 
   const contractInput = {
@@ -50,7 +51,7 @@ export const useContract = (props: Props): ReturnData => {
   } as any;
   let errorMsg;
   const { data, isLoading } = useContractReads({
-    enabled: !!address,
+    enabled: !!address && isConnected,
     contracts: [
       {
         ...contractInput,
@@ -133,7 +134,7 @@ export const useContract = (props: Props): ReturnData => {
 
   // @todo better error handling.
   const status = data?.[0].status as unknown as string;
-  if (status === "failure") {
+  if (status === "failure" && isConnected) {
     errorMsg = "Contract not found";
   }
   useEffect(() => {
@@ -195,5 +196,6 @@ export const useContract = (props: Props): ReturnData => {
     data: data ? ret.current : undefined,
     error: errorMsg,
     loading: isLoading,
+    isConnected,
   };
 };
