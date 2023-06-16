@@ -31,6 +31,7 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
 
     //Keep track of all clones of a given original token     
     mapping(uint256 => uint256[]) private _clonesOfOriginal;
+    mapping(uint256 => uint) private _mintedTime;
     
     // Keep track of all tokens
     uint256[] private _allTokens;
@@ -66,6 +67,7 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
         _allTokens.push(newTokenId);
         _totalMintedOriginalTokens++;
         _idToCreator[newTokenId] = owner;
+        _mintedTime[newTokenId] = block.timestamp;
         
     }
     /**
@@ -94,6 +96,8 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
         _allTokens.push(newTokenId);
         _totalMintedCloneTokens++;
         _idToCreator[newTokenId] = msg.sender;
+
+        _mintedTime[newTokenId] = block.timestamp;
     }
 
      function _transfer(
@@ -281,6 +285,11 @@ contract BookmarkNFT is ERC721URIStorage, Ownable {
     function getHasClonePrice(uint256 tokenId) public view returns (bool) {
         require(_exists(tokenId), "Token does not exist");
         return _hasClonePrice[tokenId];
+    }
+
+    function getMintedTime(uint256 tokenId) public view returns (uint) {
+        require(_exists(tokenId), "Token does not exist");
+        return _mintedTime[tokenId];
     }
 
    /**

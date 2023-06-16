@@ -43,14 +43,8 @@ export const ContractToken = (props: ContractTokenProps) => {
     mounted &&
     tokenChainData?.ownerOf &&
     tokenChainData?.ownerOf === account?.address;
-  const attributes = data?.attributes.reduce((acc, attribute) => {
-    return {
-      ...acc,
-      [attribute.trait_type]: attribute.value,
-    };
-  }, {} as Record<string, string>) as NFTAttributes;
 
-  const ts = new Date(attributes?.Timestamp).toLocaleString();
+  const ts = new Date(tokenChainData?.mintedAt || 0).toLocaleString();
   const [, ipfsHash] = (tokenChainData?.uri || "").split("//");
   const mintPath = mounted
     ? `/mint?ipfsHash=${ipfsHash}&contractAddress=${address}&network=${

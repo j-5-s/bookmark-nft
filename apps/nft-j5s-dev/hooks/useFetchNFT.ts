@@ -24,6 +24,7 @@ export type TokenChainData = {
   hasClonePrice: boolean;
   clonePrice: bigint;
   cloneOf?: bigint;
+  mintedAt?: number;
 };
 
 export const useFetchNFT = (props: Props) => {
@@ -83,6 +84,12 @@ export const useFetchNFT = (props: Props) => {
         functionName: "getOriginal",
         args: [tokenId],
       },
+
+      {
+        ...contractInput,
+        functionName: "getMintedTime",
+        args: [tokenId],
+      },
     ],
   });
 
@@ -93,6 +100,7 @@ export const useFetchNFT = (props: Props) => {
     ownerOf: "",
     clonePrice: BigInt(0),
     hasClonePrice: false,
+    mintedAt: undefined,
   } as TokenChainData;
 
   if (readsResponse.data) {
@@ -108,6 +116,11 @@ export const useFetchNFT = (props: Props) => {
     const cloneOf = readsResponse.data[5].result as unknown as bigint;
     if (cloneOf) {
       chainData.cloneOf = cloneOf;
+    }
+
+    const mintedAt = readsResponse.data[6].result as unknown as bigint;
+    if (mintedAt) {
+      chainData.mintedAt = Number(mintedAt) * 1000;
     }
   }
 

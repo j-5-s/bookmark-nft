@@ -14,7 +14,7 @@ type CollectionTableRowProps = {
 
 export const CollectionTableRow = (props: CollectionTableRowProps) => {
   const { tokenId, contractAddress, network, chainData } = props;
-  const { data, tokenURI, tokenChainData } = useFetchNFT({
+  const { data, tokenChainData } = useFetchNFT({
     tokenId,
     contractAddress,
   });
@@ -25,8 +25,10 @@ export const CollectionTableRow = (props: CollectionTableRowProps) => {
     token: tokenId.toString(),
   });
   const attributes = getAttributesAsKeys(data);
-  const ts = attributes?.Timestamp;
-  const date = ts ? new Date(ts).toLocaleString() : "";
+
+  const date = tokenChainData.mintedAt
+    ? new Date(tokenChainData.mintedAt).toLocaleString()
+    : "";
   const creatorLink = getUrl({
     address: chainData?.creator,
     network,
