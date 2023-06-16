@@ -57,7 +57,6 @@ export const ContractToken = (props: ContractTokenProps) => {
         network.chain?.network || ""
       }&tokenId=${tokenId}`
     : "#";
-  console.log(contractData);
   return (
     <section className="py-6 container mx-auto px-2 md:px-0">
       <div className="flex justify-between mb-2 items-baseline">
