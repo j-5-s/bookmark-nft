@@ -107,5 +107,7 @@ This will trigger Metamask to ask you to confirm your transaction. After doing s
 
 # Next steps
 
+I'd like to continue developing the idea and be able to easily compare changes of given url over time. I'm of the opinion that [content should be living](https://www.j5s.dev/blog/writing) documents and that a blog post or article can and should be updated over time as your position and understanding evolves.
+
 - Integrating history of tokens for given url into extension
   - [react diff viewer](https://praneshravi.in/react-diff-viewer/) for text
