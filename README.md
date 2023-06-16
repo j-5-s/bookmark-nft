@@ -16,7 +16,7 @@ Technologies used are:
 
 This project is a monorepo repo containing 2 apps and 1 library:
 
-Apps
+#### Apps
 
 - [./apps/extension/](./apps/extension/) - Chrome Extension - React
 - [./apps/nft-j5s-dev/](./apps/nft-j5s-dev/) - React Dapp ([j5s.nft.dev](https://nft.j5s.dev/) website)
