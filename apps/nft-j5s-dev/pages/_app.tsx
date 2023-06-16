@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import "./styles.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
