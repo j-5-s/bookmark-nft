@@ -1,1 +1,2 @@
-import "./accounts"
+import "./accounts";
+import "./flat";

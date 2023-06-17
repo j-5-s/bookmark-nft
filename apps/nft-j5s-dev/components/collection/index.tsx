@@ -32,7 +32,7 @@ export const Collection = (props: CollectionProps) => {
   console.log(network);
   const [tokenList, setTokenList] = useState<bigint[]>();
   const [sortType, setSortType] = useState<SortType>("descending");
-  const [myItemsFilter, setMyItemsFilter] = useState(true);
+  const [myItemsFilter, setMyItemsFilter] = useState(false);
   // 0 == all, 1 == clone, 2 == original
   const [cloneFilter, setCloneFilter] = useState(0);
 
