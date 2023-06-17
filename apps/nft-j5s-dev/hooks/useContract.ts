@@ -190,6 +190,7 @@ export const useContract = (props: Props): ReturnData => {
     address,
     transactionHash,
     network?.chain?.network,
+    ret.current.name,
   ]);
 
   return {
