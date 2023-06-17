@@ -12,6 +12,7 @@ import { Tabs, Tab, TabHeader, TabBody, TabContent } from "../tabs";
 import { FullPageMessaging } from "../FullPageMessaging";
 import { Address } from "../utility/Address";
 import { EditContract } from "./EditContract";
+import { Logo } from "../icons/logos/Logo";
 type CollectionProps = {
   address: `0x${string}`;
   url?: string;
@@ -28,7 +29,7 @@ export const Collection = (props: CollectionProps) => {
   const { data: walletClient } = useWalletClient();
   const network = useNetwork();
   const router = useRouter();
-
+  console.log(network);
   const [tokenList, setTokenList] = useState<bigint[]>();
   const [sortType, setSortType] = useState<SortType>("descending");
   const [myItemsFilter, setMyItemsFilter] = useState(true);
@@ -112,6 +113,7 @@ export const Collection = (props: CollectionProps) => {
   return (
     <div className="container py-6 mx-auto px-2 md:px-0">
       <div className="flex items-center mb-2">
+        <Logo networkName={contractData?.networkName} className="mr-2" />
         <div className="mr-1 h-full flex items-baseline">
           Contract{" "}
           <span className="text-gray-500 ml-2  text-xs mr-2">

@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useAccount, useNetwork } from "wagmi";
 import { formatEther } from "viem";
 import cs from "classnames";
-import type { NFTMetadata, NFTAttributes } from "../../../types";
+import type { NFTMetadata } from "../../../types";
+import { Logo } from "../../icons/logos/Logo";
 import { getImageURIFromIPFS, trimHash } from "../../util";
 import type { TokenChainData } from "../../../hooks/useFetchNFT";
 import { EditContractToken } from "./EditContractToken";
@@ -11,6 +12,7 @@ import { UserAgent } from "../../utility/UserAgent";
 import { useContract } from "../../../hooks/useContract";
 import { AddressImage } from "../../utility/AddressImage";
 import { TokenImage } from "../../image/TokenImage";
+import { FullPageMessaging } from "../../FullPageMessaging";
 
 type ContractTokenProps = {
   data?: NFTMetadata | null;
@@ -33,7 +35,7 @@ export const ContractToken = (props: ContractTokenProps) => {
   const chainResponse = useContract({
     address,
   });
-  const { data: contractData } = chainResponse;
+  const { data: contractData, error } = chainResponse;
 
   useEffect(() => {
     setMounted(true);
@@ -51,10 +53,16 @@ export const ContractToken = (props: ContractTokenProps) => {
         network.chain?.network || ""
       }&tokenId=${tokenId}`
     : "#";
+
+  if (error) {
+    return <FullPageMessaging error={error} />;
+  }
+
   return (
     <section className="py-6 container mx-auto px-2 md:px-0">
       <div className="flex justify-between mb-2 items-baseline">
         <div className="flex items-center">
+          <Logo networkName={contractData?.networkName} className="mr-2" />
           <div className="mr-1 h-full flex items-baseline">
             Contract{" "}
             <span className="text-gray-500 text-xs mr-2 ml-2">

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useContractReads, useAccount, useNetwork, useBalance } from "wagmi";
 import { db } from "../db/db";
+import type { NetworkName } from "../db/db";
 import { BookmarkABI } from "@j5s/contracts";
 
 type Props = {
@@ -24,6 +25,8 @@ export type ChainData = {
   createdAt: number;
   defaultClonePrice: bigint;
   approvedMinters: `0x${string}`[];
+  network: string;
+  networkName: NetworkName;
 };
 
 type ReturnData = {
@@ -38,7 +41,6 @@ export const useContract = (props: Props): ReturnData => {
 
   const { isConnected, address: userAddress } = useAccount();
   const network = useNetwork();
-
   const { data: balance } = useBalance({
     address,
     enabled: !!address && isConnected,
@@ -102,6 +104,8 @@ export const useContract = (props: Props): ReturnData => {
     createdAt: 0,
     defaultClonePrice: BigInt(0),
     approvedMinters: [],
+    network: network.chain?.network as string,
+    networkName: network.chain?.name as NetworkName,
   });
 
   if (balance) {
@@ -130,6 +134,8 @@ export const useContract = (props: Props): ReturnData => {
     }
     const approvedMinters = data[8].result as unknown as `0x${string}`[];
     ret.current.approvedMinters = approvedMinters;
+    ret.current.network = network.chain?.network as string;
+    ret.current.networkName = network.chain?.name as NetworkName;
   }
 
   // @todo better error handling.
@@ -156,7 +162,8 @@ export const useContract = (props: Props): ReturnData => {
               user: userAddress as string,
               txHash: transactionHash as string,
               name: ret.current.name,
-              network: network.chain.network,
+              network: network.chain.network as string,
+              networkName: network.chain.name as NetworkName,
               symbol: ret.current.symbol,
               creator: ret.current.creator,
               owner: ret.current.owner,
@@ -171,7 +178,8 @@ export const useContract = (props: Props): ReturnData => {
               user: userAddress as string,
               txHash: transactionHash as string,
               name: ret.current.name,
-              network: network.chain.network,
+              network: network.chain.network as string,
+              networkName: network.chain.name as NetworkName,
               symbol: ret.current.symbol,
               creator: ret.current.creator,
               owner: ret.current.owner,
@@ -191,8 +199,8 @@ export const useContract = (props: Props): ReturnData => {
     transactionHash,
     network?.chain?.network,
     ret.current.name,
+    network?.chain?.name,
   ]);
-
   return {
     data: data ? ret.current : undefined,
     error: errorMsg,

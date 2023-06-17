@@ -15,7 +15,7 @@ export default function NFTPage() {
   const networkParam = useGetFirstQueryParam("network");
   // rest of your component logic goes here
   return (
-    <section className="text-gray-600 body-font">
+    <section className="text-gray-600 body-font min-h-screen flex flex-col">
       <Header>
         <SearchField defaultValue={search} network={networkParam} />
       </Header>

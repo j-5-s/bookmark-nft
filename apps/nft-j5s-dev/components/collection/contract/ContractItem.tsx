@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { FormEvent } from "react";
 import { db } from "../../../db/db";
 import type { Contract } from "../../../db/db";
 import { XCircle } from "../../icons/x-circle";
+import { Logo } from "../../icons/logos/Logo";
 
 type ContractItemProps = {
   contract: Contract;
@@ -15,6 +15,7 @@ export const ContractItem = (props: ContractItemProps) => {
     evt.preventDefault();
     db.contracts.delete(contract.id as number);
   };
+
   return (
     <div className="relative  border rounded shadow bg-white p-4">
       <a
@@ -22,9 +23,12 @@ export const ContractItem = (props: ContractItemProps) => {
         className=""
       >
         <div className="flex-grow text-left mb-2">
-          <h2 className="text-xl font-medium text-gray-900 title-font mb-2">
-            {contract.name} ({contract.symbol})
-          </h2>
+          <div className="flex items-center  mb-2 ">
+            <Logo networkName={contract.networkName} className="mr-2" />
+            <h2 className="text-xl font-medium text-gray-900 title-font flex-grow">
+              {contract.name} ({contract.symbol})
+            </h2>
+          </div>
           <p className="leading-relaxed">{contract.description}</p>
         </div>
         <div className="mb-6 flex-shrink-0 flex flex-col">

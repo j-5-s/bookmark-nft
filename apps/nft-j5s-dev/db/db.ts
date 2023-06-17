@@ -1,5 +1,5 @@
 import Dexie, { Table } from "dexie";
-
+export type NetworkName = "Ethereum" | "Sepolia" | "Polygon" | "Polygon Mumbai";
 export interface Contract {
   id?: number;
   // The logged in user to wagmi
@@ -11,6 +11,7 @@ export interface Contract {
   creator: string;
   owner: string;
   network: string;
+  networkName: NetworkName;
   description: string;
   createdAt: number;
 }
